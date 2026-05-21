@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MindDecode — Fingerprint Scan Demo | Discover Your Intelligence</title>
+<meta name="description" content="Interactive DMIT fingerprint scan demo. See how your fingerprint reveals your intelligence profile, personality type, and career matches.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════
+   SCAN DEMO — Complete Rewrite
+   Mobile-first, photorealistic hand, clean layout
+═══════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:    #005EAA;
+  --blue-l:  #1A8FE3;
+  --cyan:    #00C8FF;
+  --orange:  #F57C00;
+  --orange-l:#FF9A3C;
+  --dark:    #07101E;
+  --dark2:   #0C1A2E;
+  --glass:   rgba(255,255,255,0.05);
+  --border:  rgba(0,94,170,0.3);
+  --font-h:  'Poppins', sans-serif;
+  --font-b:  'Inter', sans-serif;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--dark);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Ambient BG ── */
+.bg-layer {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(0,94,170,.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(245,124,0,.1) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,200,255,.04) 0%, transparent 70%);
+}
+
+.grid-dots {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, rgba(0,94,170,.12) 1px, transparent 0);
+  background-size: 38px 38px;
+}
+
+/* Decorative fp rings */
+.fp-rings { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.fp-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(0,94,170,.1);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.fp-ring:nth-child(1) { width: 700px; height: 700px; border-color: rgba(0,94,170,.08); animation: ringRot 70s linear infinite; }
+.fp-ring:nth-child(2) { width: 500px; height: 500px; border-color: rgba(245,124,0,.06); animation: ringRot 45s linear infinite reverse; }
+.fp-ring:nth-child(3) { width: 300px; height: 300px; border-color: rgba(0,200,255,.07); animation: ringRot 30s linear infinite; }
+@keyframes ringRot { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* ── Layout ── */
+.page {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 80px;
+}
+
+/* Back btn */
+.back-btn {
+  position: fixed; top: 16px; left: 16px; z-index: 100;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.6); padding: 8px 14px; border-radius: 100px;
+  font-family: var(--font-b); font-size: .8rem; font-weight: 500;
+  text-decoration: none; transition: all .2s; backdrop-filter: blur(12px);
+}
+.back-btn:hover { background: rgba(255,255,255,.12); color: white; }
+
+/* ── Logo ── */
+.scan-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 8px; margin-bottom: 28px;
+}
+.scan-logo img {
+  width: 40px; height: 40px; border-radius: 10px;
+  object-fit: cover; display: block;
+  box-shadow: 0 4px 16px rgba(0,94,170,.4);
+}
+.scan-logo-text {
+  font-family: var(--font-h); font-weight: 800; font-size: 1.25rem; color: white;
+}
+.scan-logo-text em { font-style: normal; color: var(--orange-l); }
+
+/* ── Header ── */
+.scan-header {
+  text-align: center; margin-bottom: 32px; max-width: 520px; padding: 0 8px;
+}
+.scan-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(0,94,170,.2); border: 1px solid rgba(0,94,170,.35);
+  color: #60A5FA; padding: 5px 14px; border-radius: 100px;
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; margin-bottom: 14px;
+}
+.scan-header h1 {
+  font-family: var(--font-h); font-weight: 800;
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
+  line-height: 1.2; margin-bottom: 10px;
+}
+.scan-header h1 span { color: var(--orange-l); }
+.scan-header p { color: rgba(255,255,255,.5); font-size: .875rem; line-height: 1.6; }
+
+/* ════════════════════════════════════════════
+   SCANNER DEVICE
+════════════════════════════════════════════ */
+.scanner-wrap {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%; max-width: 360px;
+}
+
+/* The device itself — a scanner pad */
+.device {
+  position: relative;
+  width: 280px; height: 420px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scanner glass plate */
+.plate {
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 240px; height: 280px;
+  background: linear-gradient(160deg, #0A1828 0%, #061020 100%);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 1px rgba(0,200,255,.05),
+    0 12px 48px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.07),
+    inset 0 0 40px rgba(0,94,170,.05);
+  overflow: hidden;
+  transition: border-color .4s, box-shadow .4s;
+}
+
+.device.scanning .plate {
+  border-color: rgba(0,200,255,.65);
+  box-shadow:
+    0 0 0 1px rgba(0,200,255,.25),
+    0 0 60px rgba(0,200,255,.15),
+    0 12px 48px rgba(0,0,0,.55),
+    inset 0 0 40px rgba(0,200,255,.07);
+}
+.device.done .plate {
+  border-color: rgba(245,124,0,.65);
+  box-shadow:
+    0 0 0 1px rgba(245,124,0,.25),
+    0 0 60px rgba(245,124,0,.15),
+    0 12px 48px rgba(0,0,0,.55),
+    inset 0 0 40px rgba(245,124,0,.07);
+}
+
+/* Corner brackets */
+.corner {
+  position: absolute; width: 20px; height: 20px;
+  border-style: solid; border-color: rgba(0,200,255,.55);
+  transition: border-color .4s; z-index: 3;
+}
+.c-tl { top: 10px; left: 10px;  border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+.c-tr { top: 10px; right: 10px; border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
+.c-bl { bottom: 10px; left: 10px;  border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
+.c-br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+.device.done .corner { border-color: rgba(245,124,0,.65); }
+
+/* Fingerprint SVG inside plate */
+.fp-wrap {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.fp-svg {
+  width: 180px; height: 220px;
+  transition: filter .5s;
+  filter: drop-shadow(0 0 4px rgba(0,94,170,.4));
+}
+.device.scanning .fp-svg {
+  filter:
+    drop-shadow(0 0 16px rgba(0,200,255,.9))
+    drop-shadow(0 0 32px rgba(0,200,255,.4));
+  animation: fpPulse .6s ease-in-out infinite alternate;
+}
+.device.done .fp-svg {
+  filter:
+    drop-shadow(0 0 16px rgba(245,124,0,.9))
+    drop-shadow(0 0 32px rgba(245,124,0,.4));
+}
+@keyframes fpPulse {
+  from { filter: drop-shadow(0 0 10px rgba(0,200,255,.7)); }
+  to   { filter: drop-shadow(0 0 24px rgba(0,200,255,1)) drop-shadow(0 0 40px rgba(0,200,255,.5)); }
+}
+
+/* Ridge color transitions */
+.ridge { fill: none; stroke-linecap: round; stroke-linejoin: round; transition: stroke .55s, stroke-width .4s; }
+.r-o { stroke: #1A3866; stroke-width: 2.4; }
+.r-m { stroke: #1E4E8C; stroke-width: 2.0; }
+.r-i { stroke: #1A6DAA; stroke-width: 1.8; }
+.r-c { stroke: #2080C0; stroke-width: 1.6; }
+
+.device.scanning .r-o { stroke: #00C8FF; }
+.device.scanning .r-m { stroke: #00DDFF; }
+.device.scanning .r-i { stroke: #00F0FF; }
+.device.scanning .r-c { stroke: #B0FFFF; }
+
+.device.done .r-o { stroke: #DD5500; }
+.device.done .r-m { stroke: #F06B10; }
+.device.done .r-i { stroke: #F88820; }
+.device.done .r-c { stroke: #FFCC88; }
+
+/* Scan beam */
+.beam {
+  position: absolute; left: 8px; right: 8px; height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,200,255,.15) 10%,
+    rgba(0,200,255,1)   50%,
+    rgba(0,200,255,.15) 90%,
+    transparent 100%);
+  box-shadow: 0 0 10px 3px rgba(0,200,255,.6);
+  border-radius: 2px; z-index: 5;
+  opacity: 0; pointer-events: none; top: 0;
+}
+.device.scanning .beam {
+  opacity: 1;
+  animation: beamSweep 1.35s cubic-bezier(.42,.05,.58,.95) infinite;
+}
+@keyframes beamSweep {
+  0%   { top: 8px;  opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 1; }
+  100% { top: calc(100% - 12px); opacity: 0; }
+}
+
+/* Pulse rings inside plate */
+.p-ring {
+  position: absolute; border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  border: 1.5px solid rgba(0,200,255,.5);
+  opacity: 0; pointer-events: none;
+  animation: plateRingPulse 2.6s ease-out infinite;
+}
+.p-ring:nth-child(2) { animation-delay: .86s; }
+.p-ring:nth-child(3) { animation-delay: 1.72s; }
+.device:not(.scanning):not(.done) .p-ring { animation-play-state: paused; }
+.device.done .p-ring { border-color: rgba(245,124,0,.5); }
+@keyframes plateRingPulse {
+  0%   { width: 40px; height: 40px; opacity: .7; }
+  100% { width: 260px; height: 260px; opacity: 0; }
+}
+
+/* ─── TAP HINT ─── */
+.tap-hint {
+  position: absolute;
+  bottom: 138px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-b); font-size: .7rem; font-weight: 600;
+  color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: .1em;
+  white-space: nowrap; animation: hintBlink 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes hintBlink { 0%,100%{opacity:.3}50%{opacity:.75} }
+.device.scanning .tap-hint,
+.device.done     .tap-hint { opacity: 0; pointer-events: none; }
+
+/* ════════════════════════════════════════════
+   HAND ILLUSTRATION
+   Positioned below plate, finger touching it
+════════════════════════════════════════════ */
+.hand-wrap {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 260px; height: 240px;
+  pointer-events: none; z-index: 10;
+}
+
+.hand-svg-el {
+  width: 100%; height: 100%;
+  /* Idle float */
+  animation: handFloat 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,.65));
+  transition: opacity .5s ease;
+  transform-origin: 50% 100%;
+}
+
+/* While scanning — finger moves over plate */
+.device.scanning .hand-svg-el {
+  animation: handScanAnim 1.35s cubic-bezier(.42,.05,.58,.95) infinite;
+}
+
+/* After done — hand lifts away */
+.device.done .hand-svg-el {
+  animation: handLift .6s ease-in forwards;
+}
+
+@keyframes handFloat {
+  0%,100% { transform: translateY(0px) rotate(-3deg); }
+  50%      { transform: translateY(-8px) rotate(-3deg); }
+}
+
+@keyframes handScanAnim {
+  0%   { transform: translateY(60px) rotate(-3deg); opacity: .5; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateY(-90px) rotate(-3deg); opacity: .4; }
+}
+
+@keyframes handLift {
+  from { transform: translateY(0) rotate(-3deg); opacity: 1; }
+  to   { transform: translateY(-120px) rotate(-3deg); opacity: 0; }
+}
+
+/* Tip glow — lights up fingertip during scan */
+.tip-glow {
+  position: absolute;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,200,255,.7), transparent 70%);
+  top: 16px; left: 50%; transform: translateX(-50%);
+  opacity: 0; filter: blur(8px);
+  animation: none;
+  transition: opacity .3s;
+}
+.device.scanning .tip-glow {
+  opacity: 1;
+  animation: tipGlowPulse 1.35s ease-in-out infinite;
+}
+@keyframes tipGlowPulse { 0%,100%{opacity:.5;transform:translateX(-50%) scale(1)} 50%{opacity:1;transform:translateX(-50%) scale(1.3)} }
+
+/* ─── Progress + Status ─── */
+.status-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 24px;
+  font-size: .8rem; color: rgba(255,255,255,.45);
+}
+.s-led {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255,255,255,.12); flex-shrink: 0;
+  transition: background .3s;
+}
+.s-led.active   { background: var(--cyan); animation: ledBlink 1s ease-in-out infinite; }
+.s-led.complete { background: #10B981; animation: none; }
+@keyframes ledBlink { 0%,100%{opacity:1}50%{opacity:.25} }
+
+.prog-track {
+  width: 280px; height: 5px; border-radius: 3px;
+  background: rgba(255,255,255,.07); overflow: hidden;
+  margin-top: 12px;
+  opacity: 0; transition: opacity .3s;
+}
+.prog-track.show { opacity: 1; }
+.prog-fill {
+  height: 100%; width: 0; border-radius: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  transition: width .08s linear;
+}
+
+.scan-msg-txt {
+  font-size: .82rem; color: rgba(255,255,255,.55);
+  min-height: 20px; text-align: center; margin-top: 10px;
+  font-family: var(--font-b);
+}
+
+/* Step strip */
+.steps-row {
+  display: flex; align-items: center; gap: 0;
+  margin-top: 28px;
+}
+.s-node {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  width: 68px;
+}
+.s-circle {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-h); font-weight: 700; font-size: .78rem;
+  color: rgba(255,255,255,.25); transition: all .4s;
+}
+.s-circle.on {
+  background: linear-gradient(135deg, var(--blue), var(--blue-l));
+  border-color: transparent; color: white;
+  box-shadow: 0 0 18px rgba(0,94,170,.55);
+}
+.s-circle.ok {
+  background: linear-gradient(135deg, #059669, #10B981);
+  border-color: transparent; color: white;
+}
+.s-lbl { font-size: .62rem; color: rgba(255,255,255,.25); transition: color .3s; text-align: center; }
+.s-node.on .s-lbl { color: rgba(255,255,255,.65); }
+
+.s-line {
+  flex: 1; height: 1px; background: rgba(255,255,255,.07);
+  min-width: 14px; max-width: 36px; overflow: hidden; position: relative;
+}
+.s-line-fill {
+  position: absolute; inset-y: 0; left: 0; width: 0;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  transition: width .6s ease;
+}
+
+/* ════════════════════════════════════════════
+   RESULTS PANEL
+════════════════════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(7,16,30,.93); backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px;
+  opacity: 0; pointer-events: none; transition: opacity .5s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+
+.r-card {
+  background: linear-gradient(160deg, #0C1A2E 0%, #0E2040 100%);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  max-width: 620px; width: 100%;
+  max-height: 94vh; overflow-y: auto;
+  box-shadow: 0 0 80px rgba(0,94,170,.16), 0 40px 80px rgba(0,0,0,.5);
+  animation: cardSlide .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+.r-card::-webkit-scrollbar { width: 4px; }
+.r-card::-webkit-scrollbar-thumb { background: rgba(0,94,170,.3); border-radius: 2px; }
+@keyframes cardSlide { from{transform:translateY(24px) scale(.96);opacity:0}to{transform:none;opacity:1} }
+
+/* Header band */
+.r-head {
+  background: linear-gradient(135deg, #004F8F, #0A2B4E);
+  padding: 24px 24px 20px;
+  border-radius: 22px 22px 0 0;
+  position: relative; overflow: hidden;
+}
+.r-head::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0);
+  background-size: 24px 24px; pointer-events: none;
+}
+.r-head-row {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 14px;
+}
+.r-tick {
+  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--orange), var(--orange-l));
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 24px rgba(245,124,0,.5);
+  animation: tickPop .5s cubic-bezier(.34,1.56,.64,1) .15s both;
+}
+@keyframes tickPop { from{transform:scale(0) rotate(-30deg)}to{transform:scale(1) rotate(0)} }
+.r-tick svg { width: 22px; height: 22px; stroke: white; stroke-width: 3; fill: none; }
+.r-head-txt h2 {
+  font-family: var(--font-h); font-weight: 700; font-size: 1.05rem;
+  color: white; margin-bottom: 3px;
+}
+.r-head-txt p { font-size: .75rem; color: rgba(255,255,255,.5); }
+.r-close-btn {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.5); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: .2s;
+}
+.r-close-btn:hover { background: rgba(255,255,255,.16); color: white; }
+
+/* Result body */
+.r-body { padding: 20px 22px 24px; }
+
+.r-section-lbl {
+  font-size: .67rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: rgba(255,255,255,.3);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+}
+
+/* Intel bars */
+.intel-bars { display: flex; flex-direction: column; gap: 9px; margin-bottom: 20px; }
+.ib-row { display: flex; align-items: center; gap: 9px; }
+.ib-name { width: 108px; flex-shrink: 0; font-size: .78rem; font-weight: 500; color: rgba(255,255,255,.72); }
+.ib-track { flex: 1; height: 8px; background: rgba(255,255,255,.07); border-radius: 4px; overflow: hidden; }
+.ib-fill  { height: 100%; border-radius: 4px; width: 0; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+.ib-pct   { width: 32px; flex-shrink: 0; text-align: right; font-size: .72rem; color: rgba(255,255,255,.45); font-weight: 600; }
+
+/* Brain dominance */
+.dom-row { display: flex; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+.dom-l { background: linear-gradient(90deg, #005EAA, #1A8FE3); transition: width 1.2s ease; }
+.dom-r { background: linear-gradient(90deg, var(--orange), var(--orange-l)); transition: width 1.2s ease; }
+.dom-lbls { display: flex; justify-content: space-between; font-size: .75rem; font-weight: 600; margin-bottom: 20px; }
+.dom-lbls .dl { color: #60A5FA; }
+.dom-lbls .dr { color: var(--orange-l); }
+
+/* Personality */
+.pers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 20px; }
+.pers-item {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+  border-radius: 11px; padding: 13px 12px;
+  animation: fadeUp .4s both;
+}
+.pers-item:nth-child(1){animation-delay:.05s}.pers-item:nth-child(2){animation-delay:.1s}
+.pers-item:nth-child(3){animation-delay:.15s}.pers-item:nth-child(4){animation-delay:.2s}
+@keyframes fadeUp { from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1} }
+.pers-k { font-size: .65rem; color: rgba(255,255,255,.32); margin-bottom: 3px; }
+.pers-v { font-size: .82rem; font-weight: 600; color: white; }
+
+/* Careers */
+.career-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
+.c-chip {
+  background: rgba(0,94,170,.14); border: 1px solid rgba(0,94,170,.25);
+  border-radius: 11px; padding: 13px 8px; text-align: center;
+  transition: all .2s; cursor: default;
+  animation: chipIn .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+.c-chip:hover { background: rgba(0,94,170,.28); transform: translateY(-2px); }
+.c-chip-ico { display: block; margin: 0 auto 6px; color: #60A5FA; }
+.c-chip-n   { font-size: .7rem; font-weight: 600; color: rgba(255,255,255,.8); line-height: 1.25; }
+.c-chip:nth-child(1){animation-delay:.04s}.c-chip:nth-child(2){animation-delay:.08s}
+.c-chip:nth-child(3){animation-delay:.12s}.c-chip:nth-child(4){animation-delay:.16s}
+.c-chip:nth-child(5){animation-delay:.2s} .c-chip:nth-child(6){animation-delay:.24s}
+@keyframes chipIn { from{transform:scale(.75);opacity:0}to{transform:none;opacity:1} }
+
+/* CTA strip */
+.cta-strip {
+  background: rgba(245,124,0,.08); border: 1px solid rgba(245,124,0,.2);
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; text-align: center;
+}
+.cta-strip-t { font-weight: 700; color: white; font-family: var(--font-h); font-size: .9rem; margin-bottom: 4px; }
+.cta-strip-s { font-size: .75rem; color: rgba(255,255,255,.42); }
+
+/* Actions */
+.r-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.r-btn-p {
+  flex: 1; min-width: 140px;
+  background: linear-gradient(135deg, var(--orange), var(--orange-l));
+  color: white; border: none; border-radius: 100px; padding: 13px 18px;
+  font-family: var(--font-h); font-weight: 700; font-size: .875rem;
+  cursor: pointer; box-shadow: 0 4px 20px rgba(245,124,0,.35);
+  transition: all .25s; display: flex; align-items: center; justify-content: center; gap: 6px;
+  text-decoration: none;
+}
+.r-btn-p:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,124,0,.5); }
+.r-btn-g {
+  flex: 1; min-width: 140px;
+  background: rgba(255,255,255,.06); color: rgba(255,255,255,.75);
+  border: 1px solid rgba(255,255,255,.12); border-radius: 100px; padding: 13px 18px;
+  font-family: var(--font-h); font-weight: 600; font-size: .875rem;
+  cursor: pointer; transition: all .25s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.r-btn-g:hover { background: rgba(255,255,255,.12); color: white; }
+
+/* ─── Mobile results ─── */
+@media (max-width: 480px) {
+  .career-grid { grid-template-columns: repeat(2,1fr); }
+  .pers-grid   { grid-template-columns: 1fr; }
+  .r-actions   { flex-direction: column; }
+  .r-btn-p,.r-btn-g { min-width: 100%; }
+  .r-body { padding: 16px 14px 20px; }
+  .r-head { padding: 18px 14px 16px; }
+}
+
+/* ─── Device size on mobile ─── */
+@media (max-width: 480px) {
+  .device      { width: 240px; height: 360px; }
+  .plate       { width: 200px; height: 240px; }
+  .fp-svg      { width: 150px; height: 186px; }
+  .hand-wrap   { width: 220px; height: 200px; }
+  .prog-track  { width: 230px; }
+}
+@media (max-width: 360px) {
+  .device      { width: 210px; height: 320px; }
+  .plate       { width: 176px; height: 210px; }
+  .fp-svg      { width: 130px; height: 162px; }
+  .hand-wrap   { width: 196px; height: 180px; }
+  .steps-row   { display: none; }
+  .prog-track  { width: 200px; }
+  .scan-header h1 { font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="grid-dots"></div>
+<div class="fp-rings">
+  <div class="fp-ring"></div>
+  <div class="fp-ring"></div>
+  <div class="fp-ring"></div>
+</div>
+
+<a href="index.html" class="back-btn">
+  <i data-lucide="arrow-left" style="width:13px;height:13px"></i> Home
+</a>
+
+<div class="page">
+
+  <!-- Logo -->
+  <div class="scan-logo">
+    <img src="assets/images/logo.jpeg" alt="MindDecode">
+    <span class="scan-logo-text">Mind<em>Decode</em></span>
+  </div>
+
+  <!-- Header -->
+  <div class="scan-header">
+    <div class="scan-badge">
+      <i data-lucide="fingerprint" style="width:11px;height:11px"></i>
+      Interactive Demo
+    </div>
+    <h1>Scan Your Fingerprint &amp;<br><span>Reveal Your Future</span></h1>
+    <p>Experience what a real DMIT scan reveals — your intelligence, personality &amp; perfect career matches</p>
+  </div>
+
+  <!-- Scanner -->
+  <div class="scanner-wrap">
+    <div class="device" id="dev" onclick="startScan()" tabindex="0" role="button" aria-label="Tap to start fingerprint scan">
+
+      <!-- Plate -->
+      <div class="plate">
+        <!-- Corners -->
+        <div class="corner c-tl"></div>
+        <div class="corner c-tr"></div>
+        <div class="corner c-bl"></div>
+        <div class="corner c-br"></div>
+
+        <!-- Pulse rings -->
+        <div class="p-ring"></div>
+        <div class="p-ring"></div>
+        <div class="p-ring"></div>
+
+        <!-- Fingerprint SVG — high-detail loop whorl -->
+        <div class="fp-wrap">
+          <svg class="fp-svg" viewBox="0 0 180 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- OUTER GROUP — arch ridges -->
+            <path class="ridge r-o" d="M90 212 C44 212 14 180 14 142 C14 88 42 52 90 36 C138 52 166 88 166 142 C166 180 136 212 90 212Z"/>
+            <path class="ridge r-o" d="M90 200 C51 200 24 172 24 140 C24 90 50 58 90 46 C130 58 156 90 156 140 C156 172 129 200 90 200Z"/>
+            <path class="ridge r-o" d="M90 188 C58 188 34 164 34 138 C34 92 58 64 90 56 C122 64 146 92 146 138 C146 164 122 188 90 188Z"/>
+
+            <!-- MID GROUP -->
+            <path class="ridge r-m" d="M90 176 C65 176 44 156 44 136 C44 94 66 70 90 66 C114 70 136 94 136 136 C136 156 115 176 90 176Z"/>
+            <path class="ridge r-m" d="M90 164 C72 164 54 148 54 134 C54 96 74 76 90 76 C106 76 126 96 126 134 C126 148 108 164 90 164Z"/>
+            <path class="ridge r-m" d="M90 152 C79 152 64 140 64 132 C64 98 80 82 90 86 C100 82 116 98 116 132 C116 140 101 152 90 152Z"/>
+
+            <!-- INNER GROUP -->
+            <path class="ridge r-i" d="M90 140 C81 140 74 130 74 128 C74 102 82 88 90 92 C98 88 106 102 106 128 C106 130 99 140 90 140Z"/>
+            <path class="ridge r-i" d="M90 128 C84 128 80 120 80 118 C80 104 85 95 90 98 C95 95 100 104 100 118 C100 120 96 128 90 128Z"/>
+            <path class="ridge r-i" d="M90 116 C86 116 84 110 84 110 C84 100 87 97 90 99 C93 97 96 100 96 110 C96 110 94 116 90 116Z"/>
+
+            <!-- CORE WHORL -->
+            <ellipse class="ridge r-c" cx="90" cy="108" rx="6" ry="7"/>
+            <ellipse cx="90" cy="108" rx="2.5" ry="3" fill="rgba(32,128,192,.35)" stroke="#2080C0" stroke-width="1.5" class="ridge"/>
+
+            <!-- LEFT SIDE -->
+            <path class="ridge r-o" d="M18 115 Q8 140 10 168" stroke-width="1.8" opacity=".5"/>
+            <path class="ridge r-m" d="M28 104 Q16 132 18 164" stroke-width="1.6" opacity=".5"/>
+            <path class="ridge r-i" d="M38 97  Q24 127 26 160" stroke-width="1.4" opacity=".48"/>
+
+            <!-- RIGHT SIDE -->
+            <path class="ridge r-o" d="M162 115 Q172 140 170 168" stroke-width="1.8" opacity=".5"/>
+            <path class="ridge r-m" d="M152 104 Q164 132 162 164" stroke-width="1.6" opacity=".5"/>
+            <path class="ridge r-i" d="M142 97  Q156 127 154 160" stroke-width="1.4" opacity=".48"/>
+
+            <!-- BOTTOM -->
+            <path class="ridge r-o" d="M22 176 Q56 204 90 210 Q124 204 158 176" stroke-width="1.8" opacity=".48"/>
+            <path class="ridge r-m" d="M16 186 Q52 216 90 220 Q128 216 164 186" stroke-width="1.6" opacity=".38"/>
+
+            <!-- TOP -->
+            <path class="ridge r-o" d="M56 44 Q90 28 124 44" stroke-width="2.2" opacity=".58"/>
+            <path class="ridge r-m" d="M42 56 Q90 36 138 56" stroke-width="2.0" opacity=".52"/>
+
+            <!-- DELTA POINTS -->
+            <circle cx="36" cy="120" r="2.5" fill="#1A6DAA" opacity=".7"/>
+            <path class="ridge r-m" d="M36 120 L26 108" stroke-width="1.3" opacity=".45"/>
+            <path class="ridge r-m" d="M36 120 L26 132" stroke-width="1.3" opacity=".45"/>
+
+            <circle cx="144" cy="120" r="2.5" fill="#1A6DAA" opacity=".7"/>
+            <path class="ridge r-m" d="M144 120 L154 108" stroke-width="1.3" opacity=".45"/>
+            <path class="ridge r-m" d="M144 120 L154 132" stroke-width="1.3" opacity=".45"/>
+
+            <!-- MINUTIAE DETAILS -->
+            <path class="ridge r-c" d="M76 106 L72 101" stroke-width="1.1" opacity=".6"/>
+            <path class="ridge r-c" d="M104 106 L108 101" stroke-width="1.1" opacity=".6"/>
+            <path class="ridge r-c" d="M76 114 L71 118" stroke-width="1.1" opacity=".6"/>
+            <path class="ridge r-c" d="M104 114 L109 118" stroke-width="1.1" opacity=".6"/>
+            <path class="ridge r-c" d="M80 92 L76 87" stroke-width="1.0" opacity=".5"/>
+            <path class="ridge r-c" d="M100 92 L104 87" stroke-width="1.0" opacity=".5"/>
+          </svg>
+        </div>
+
+        <!-- Scan beam -->
+        <div class="beam" id="beam"></div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           HAND SVG — Realistic illustration
+           Fingertip resting on scanner plate
+      ═══════════════════════════════ -->
+      <div class="hand-wrap" id="handWrap">
+        <div class="tip-glow"></div>
+
+        <svg class="hand-svg-el" viewBox="0 0 260 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- Skin tones -->
+            <linearGradient id="hSkin1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#F4C190"/>
+              <stop offset="55%"  stop-color="#E6A668"/>
+              <stop offset="100%" stop-color="#D08A4C"/>
+            </linearGradient>
+            <linearGradient id="hSkin2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#F0BC88"/>
+              <stop offset="100%" stop-color="#D89A58"/>
+            </linearGradient>
+            <linearGradient id="hSkin3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#EAB070"/>
+              <stop offset="100%" stop-color="#C87840"/>
+            </linearGradient>
+            <linearGradient id="hNail" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#F8DCAA"/>
+              <stop offset="100%" stop-color="#E6BC80"/>
+            </linearGradient>
+            <linearGradient id="hNailSheen" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"   stop-color="rgba(255,255,255,.45)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+            <linearGradient id="hPalm" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#E8A860"/>
+              <stop offset="100%" stop-color="#C07030"/>
+            </linearGradient>
+            <filter id="hShadow">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+              <feOffset dx="0" dy="3" result="blur"/>
+              <feComponentTransfer><feFuncA type="linear" slope=".22"/></feComponentTransfer>
+              <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ── PALM (horizontal orientation — hand reaching down) ── -->
+          <path d="M60 155 Q58 195 62 225 Q72 238 130 240 Q188 238 198 225 Q202 195 200 155Z"
+            fill="url(#hPalm)" filter="url(#hShadow)"/>
+
+          <!-- Palm creases -->
+          <path d="M72 172 Q130 180 188 170" stroke="#B86830" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".45"/>
+          <path d="M68 194 Q130 202 192 192" stroke="#B86830" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".38"/>
+          <path d="M66 214 Q130 222 194 212" stroke="#B86830" stroke-width="1.0" fill="none" stroke-linecap="round" opacity=".3"/>
+
+          <!-- Palm side highlights -->
+          <path d="M60 165 Q58 195 62 225" stroke="#D08050" stroke-width="10" stroke-linecap="round" opacity=".18" fill="none"/>
+          <path d="M200 165 Q202 195 198 225" stroke="#D08050" stroke-width="10" stroke-linecap="round" opacity=".18" fill="none"/>
+
+          <!-- ── THUMB (left side) ── -->
+          <path d="M62 175 Q34 162 28 142 Q22 120 38 112 Q54 106 62 128 L65 162Z"
+            fill="url(#hSkin2)" filter="url(#hShadow)"/>
+          <!-- Thumb nail -->
+          <path d="M32 124 Q36 108 46 106 Q56 107 58 122 L50 116 Q44 114 38 118Z"
+            fill="url(#hNail)" opacity=".8"/>
+          <path d="M34 112 Q39 106 47 106 L47 116 Q41 114 36 118Z"
+            fill="url(#hNailSheen)" opacity=".45"/>
+          <!-- Thumb crease -->
+          <path d="M44 142 Q56 145 63 140" stroke="#B86830" stroke-width="1.2" fill="none" opacity=".4"/>
+          <path d="M40 158 Q54 162 64 157" stroke="#B86830" stroke-width="1.0" fill="none" opacity=".32"/>
+
+          <!-- ── INDEX FINGER ── -->
+          <!-- shaft -->
+          <path d="M104 158 L102 44 Q102 18 114 12 Q124 6 132 12 Q140 18 140 44 L138 158Z"
+            fill="url(#hSkin1)" filter="url(#hShadow)"/>
+          <!-- tip pad — rounder, more realistic -->
+          <ellipse cx="120" cy="14" rx="18" ry="14" fill="url(#hSkin1)"/>
+          <!-- nail -->
+          <path d="M105 28 Q107 12 120 10 Q133 12 135 26 L128 20 Q121 18 113 20Z"
+            fill="url(#hNail)" opacity=".85"/>
+          <path d="M107 14 Q113 9 121 10 L121 20 Q115 18 108 22Z"
+            fill="url(#hNailSheen)" opacity=".45"/>
+          <!-- knuckles -->
+          <path d="M105 80  Q121 85  138 80"  stroke="#C07838" stroke-width="1.5" fill="none" opacity=".38"/>
+          <path d="M104 115 Q121 120 138 115" stroke="#C07838" stroke-width="1.5" fill="none" opacity=".38"/>
+          <path d="M104 145 Q121 150 138 145" stroke="#C07838" stroke-width="1.3" fill="none" opacity=".32"/>
+
+          <!-- ── MIDDLE FINGER (tallest) ── -->
+          <path d="M142 158 L140 28 Q140 0 154 -4 Q164 -8 172 -4 Q180 0 180 28 L178 158Z"
+            fill="url(#hSkin2)" filter="url(#hShadow)"/>
+          <ellipse cx="160" cy="-2" rx="18" ry="14" fill="url(#hSkin2)"/>
+          <!-- nail -->
+          <path d="M143 14 Q145 -2 159 -4 Q173 -2 175 12 L168 6 Q160 4 153 6Z"
+            fill="url(#hNail)" opacity=".85"/>
+          <path d="M145 0 Q151 -5 160 -4 L160 6 Q154 4 147 8Z"
+            fill="url(#hNailSheen)" opacity=".45"/>
+          <!-- knuckles -->
+          <path d="M140 70  Q160 76  180 70"  stroke="#C07838" stroke-width="1.5" fill="none" opacity=".38"/>
+          <path d="M140 110 Q160 116 180 110" stroke="#C07838" stroke-width="1.5" fill="none" opacity=".38"/>
+          <path d="M140 145 Q160 151 180 145" stroke="#C07838" stroke-width="1.3" fill="none" opacity=".32"/>
+
+          <!-- ── RING FINGER ── -->
+          <path d="M182 158 L180 46 Q180 20 192 14 Q202 8 210 14 Q218 20 218 46 L216 158Z"
+            fill="url(#hSkin1)" filter="url(#hShadow)"/>
+          <ellipse cx="199" cy="16" rx="18" ry="13" fill="url(#hSkin1)"/>
+          <!-- nail -->
+          <path d="M183 30 Q185 14 199 12 Q213 14 215 28 L208 22 Q200 20 192 22Z"
+            fill="url(#hNail)" opacity=".85"/>
+          <path d="M185 16 Q191 10 200 12 L200 22 Q194 20 186 24Z"
+            fill="url(#hNailSheen)" opacity=".45"/>
+          <!-- knuckles -->
+          <path d="M181 86  Q199 91  217 86"  stroke="#C07838" stroke-width="1.5" fill="none" opacity=".38"/>
+          <path d="M181 120 Q199 126 217 120" stroke="#C07838" stroke-width="1.5" fill="none" opacity=".38"/>
+          <path d="M181 148 Q199 154 217 148" stroke="#C07838" stroke-width="1.3" fill="none" opacity=".32"/>
+
+          <!-- ── PINKY ── -->
+          <path d="M220 158 L218 82 Q218 58 228 52 Q237 46 244 52 Q251 58 251 82 L249 158Z"
+            fill="url(#hSkin3)" filter="url(#hShadow)"/>
+          <ellipse cx="235" cy="54" rx="15" ry="12" fill="url(#hSkin3)"/>
+          <!-- nail -->
+          <path d="M220 66 Q222 52 235 50 Q248 52 249 64 L243 58 Q236 56 229 58Z"
+            fill="url(#hNail)" opacity=".8"/>
+          <!-- knuckles -->
+          <path d="M219 104 Q235 110 250 104" stroke="#C07838" stroke-width="1.3" fill="none" opacity=".38"/>
+          <path d="M219 132 Q235 138 250 132" stroke="#C07838" stroke-width="1.3" fill="none" opacity=".35"/>
+
+          <!-- ── WRIST / BASE ── -->
+          <path d="M60 230 Q72 242 130 244 Q188 242 200 230 L200 240 Q180 252 130 254 Q80 252 60 240Z"
+            fill="url(#hPalm)" opacity=".7"/>
+
+          <!-- ── KNUCKLE HIGHLIGHTS (sheen across top) ── -->
+          <path d="M106 154 Q160 161 214 154"
+            stroke="rgba(255,210,150,.25)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- Tap hint -->
+      <div class="tap-hint" id="tapHint">
+        <i data-lucide="pointer" style="width:12px;height:12px;display:inline;vertical-align:middle"></i>
+        &nbsp;TAP TO SCAN
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="prog-track" id="progTrack">
+      <div class="prog-fill" id="progFill"></div>
+    </div>
+
+    <!-- Status -->
+    <div class="status-row">
+      <div class="s-led" id="sLed"></div>
+      <span id="sTxt">Ready — tap the scanner above</span>
+    </div>
+
+    <!-- Msg -->
+    <div class="scan-msg-txt" id="sMsg"></div>
+
+    <!-- Steps -->
+    <div class="steps-row" id="stepsRow">
+      <div class="s-node" id="sn1"><div class="s-circle" id="sc1">1</div><div class="s-lbl">Scan</div></div>
+      <div class="s-line"><div class="s-line-fill" id="sl1"></div></div>
+      <div class="s-node" id="sn2"><div class="s-circle" id="sc2">2</div><div class="s-lbl">Analyze</div></div>
+      <div class="s-line"><div class="s-line-fill" id="sl2"></div></div>
+      <div class="s-node" id="sn3"><div class="s-circle" id="sc3">3</div><div class="s-lbl">Map Brain</div></div>
+      <div class="s-line"><div class="s-line-fill" id="sl3"></div></div>
+      <div class="s-node" id="sn4"><div class="s-circle" id="sc4">4</div><div class="s-lbl">Reveal</div></div>
+    </div>
+
+  </div><!-- /scanner-wrap -->
+</div><!-- /page -->
+
+<!-- RESULTS OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="r-card">
+    <div class="r-head">
+      <div class="r-head-row">
+        <div class="r-tick">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="r-head-txt">
+          <h2>Intelligence Profile Decoded</h2>
+          <p id="rSubtitle">MindDecode AI — 1,247 ridge patterns analyzed</p>
+        </div>
+      </div>
+      <button class="r-close-btn" onclick="resetScan()">
+        <i data-lucide="x" style="width:15px;height:15px"></i>
+      </button>
+    </div>
+
+    <div class="r-body">
+
+      <div class="r-section-lbl">
+        <i data-lucide="brain" style="width:11px;height:11px"></i>
+        INTELLIGENCE DISTRIBUTION
+      </div>
+      <div class="intel-bars" id="intelEl"></div>
+
+      <div class="r-section-lbl">
+        <i data-lucide="split-square-horizontal" style="width:11px;height:11px"></i>
+        BRAIN DOMINANCE
+      </div>
+      <div class="dom-row">
+        <div class="dom-l" id="domL" style="width:0%"></div>
+        <div class="dom-r" id="domR" style="width:0%"></div>
+      </div>
+      <div class="dom-lbls">
+        <span class="dl" id="domLLbl"></span>
+        <span class="dr" id="domRLbl"></span>
+      </div>
+
+      <div class="r-section-lbl">
+        <i data-lucide="user-round" style="width:11px;height:11px"></i>
+        PERSONALITY PROFILE
+      </div>
+      <div class="pers-grid" id="persEl"></div>
+
+      <div class="r-section-lbl">
+        <i data-lucide="briefcase" style="width:11px;height:11px"></i>
+        YOUR TOP CAREER MATCHES
+      </div>
+      <div class="career-grid" id="careerEl"></div>
+
+      <div class="cta-strip">
+        <div class="cta-strip-t">This is a preview only</div>
+        <div class="cta-strip-s">Your real 40-page DMIT report is based on YOUR actual fingerprints — infinitely more detailed and personalised than this demo.</div>
+      </div>
+
+      <div class="r-actions">
+        <a href="booking.html" class="r-btn-p">
+          <i data-lucide="calendar-check" style="width:15px;height:15px"></i>
+          Book Real DMIT Test
+        </a>
+        <button class="r-btn-g" onclick="resetScan()">
+          <i data-lucide="rotate-ccw" style="width:14px;height:14px"></i>
+          Scan Again
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   SCAN DEMO CONTROLLER
+═══════════════════════════════════════════ */
+const PROFILES = [
+  {
+    name:"Logical-Kinesthetic Genius",
+    sub:"1,247 ridge patterns · Left-loop dominant",
+    intel:[
+      {n:"Logical-Math",   p:88, c:"linear-gradient(90deg,#005EAA,#1A8FE3)"},
+      {n:"Kinesthetic",    p:92, c:"linear-gradient(90deg,#059669,#10B981)"},
+      {n:"Visual-Spatial", p:74, c:"linear-gradient(90deg,#7C3AED,#A855F7)"},
+      {n:"Linguistic",     p:61, c:"linear-gradient(90deg,#0891B2,#06B6D4)"},
+      {n:"Interpersonal",  p:54, c:"linear-gradient(90deg,#D97706,#F59E0B)"},
+    ],
+    dL:62, dR:38,
+    pers:[
+      {k:"Personality",    v:"The Architect",        i:"target"},
+      {k:"Learning Style", v:"Kinesthetic",           i:"zap"},
+      {k:"Communication",  v:"Direct & Logical",      i:"message-square"},
+      {k:"Work Style",     v:"Hands-on Builder",      i:"wrench"},
+    ],
+    careers:[
+      {n:"Engineering",    i:"cog"},
+      {n:"Surgeon",        i:"cross"},
+      {n:"Sports Science", i:"activity"},
+      {n:"Research Sci.",  i:"flask-conical"},
+      {n:"Product Design", i:"pencil-ruler"},
+      {n:"Architecture",   i:"building-2"},
+    ]
+  },
+  {
+    name:"Creative-Linguistic Visionary",
+    sub:"1,189 ridge patterns · Right-arch dominant",
+    intel:[
+      {n:"Linguistic",     p:95, c:"linear-gradient(90deg,#F97316,#F59E0B)"},
+      {n:"Interpersonal",  p:88, c:"linear-gradient(90deg,#EC4899,#F43F5E)"},
+      {n:"Visual-Spatial", p:82, c:"linear-gradient(90deg,#7C3AED,#A855F7)"},
+      {n:"Musical",        p:76, c:"linear-gradient(90deg,#0891B2,#06B6D4)"},
+      {n:"Logical-Math",   p:52, c:"linear-gradient(90deg,#005EAA,#1A8FE3)"},
+    ],
+    dL:38, dR:62,
+    pers:[
+      {k:"Personality",    v:"The Visionary",         i:"star"},
+      {k:"Learning Style", v:"Visual-Linguistic",     i:"eye"},
+      {k:"Communication",  v:"Expressive & Warm",     i:"heart-handshake"},
+      {k:"Work Style",     v:"Creative Collaborator", i:"lightbulb"},
+    ],
+    careers:[
+      {n:"Media & Films",  i:"tv-2"},
+      {n:"Journalism",     i:"pen-line"},
+      {n:"UX Design",      i:"palette"},
+      {n:"Marketing",      i:"megaphone"},
+      {n:"Theatre & Arts", i:"drama"},
+      {n:"Law",            i:"scale"},
+    ]
+  },
+  {
+    name:"Naturalistic-Logical Explorer",
+    sub:"1,302 ridge patterns · Whorl-type dominant",
+    intel:[
+      {n:"Naturalistic",   p:91, c:"linear-gradient(90deg,#059669,#10B981)"},
+      {n:"Logical-Math",   p:84, c:"linear-gradient(90deg,#005EAA,#1A8FE3)"},
+      {n:"Kinesthetic",    p:78, c:"linear-gradient(90deg,#D97706,#F59E0B)"},
+      {n:"Intrapersonal",  p:72, c:"linear-gradient(90deg,#7C3AED,#A855F7)"},
+      {n:"Visual-Spatial", p:65, c:"linear-gradient(90deg,#0891B2,#06B6D4)"},
+    ],
+    dL:55, dR:45,
+    pers:[
+      {k:"Personality",    v:"The Explorer",          i:"compass"},
+      {k:"Learning Style", v:"Observational",         i:"binoculars"},
+      {k:"Communication",  v:"Analytical & Deep",     i:"bar-chart-2"},
+      {k:"Work Style",     v:"Independent Thinker",   i:"map"},
+    ],
+    careers:[
+      {n:"Environment",    i:"leaf"},
+      {n:"Wildlife Bio.",  i:"paw-print"},
+      {n:"Chemistry",      i:"flask-conical"},
+      {n:"Agriculture",    i:"sprout"},
+      {n:"Genetics",       i:"dna"},
+      {n:"Geology",        i:"mountain"},
+    ]
+  }
+];
+
+/* State */
+let busy=false, done=false, prog=0, fillTmr, profile;
+
+const dev     = document.getElementById('dev');
+const pFill   = document.getElementById('progFill');
+const pTrack  = document.getElementById('progTrack');
+const sLed    = document.getElementById('sLed');
+const sTxt    = document.getElementById('sTxt');
+const sMsg    = document.getElementById('sMsg');
+const overlay = document.getElementById('overlay');
+
+const PHASES = [
+  {msg:"Detecting fingerprint ridges...",   lbl:"Reading biometrics",  p:18, step:1},
+  {msg:"Mapping loop pattern structure...", lbl:"Ridge analysis",      p:36, step:1},
+  {msg:"Analyzing whorl distribution...",   lbl:"Pattern matching",    p:52, step:2},
+  {msg:"Mapping to 8 brain lobes...",       lbl:"Brain mapping",       p:68, step:2},
+  {msg:"Calculating intelligence scores...",lbl:"AI processing",       p:83, step:3},
+  {msg:"Building your profile...",          lbl:"Generating report",   p:96, step:3},
+  {msg:"Analysis complete!",               lbl:"Done",                p:100,step:4},
+];
+
+function startScan() {
+  if (busy||done) return;
+  busy = true;
+  profile = PROFILES[Math.floor(Math.random()*PROFILES.length)];
+
+  dev.classList.add('scanning');
+  document.getElementById('tapHint').style.opacity='0';
+  pTrack.classList.add('show');
+  sLed.classList.add('active');
+
+  let pi=0;
+  function tick(){
+    if(pi>=PHASES.length){finish();return;}
+    const ph=PHASES[pi];
+    sMsg.textContent=ph.msg; sTxt.textContent=ph.lbl;
+    setStep(ph.step);
+    to(ph.p,()=>{ pi++; setTimeout(tick,pi<PHASES.length?460:0); });
+  }
+  tick();
+}
+
+function to(target,cb){
+  clearInterval(fillTmr);
+  const start=prog, inc=(target-start)/24;
+  let i=0;
+  fillTmr=setInterval(()=>{
+    prog=Math.min(start+inc*i,target);
+    pFill.style.width=prog+'%';
+    i++;
+    if(prog>=target-.1){clearInterval(fillTmr);if(cb)cb();}
+  },26);
+}
+
+function finish(){
+  busy=false; done=true;
+  dev.classList.remove('scanning');
+  dev.classList.add('done');
+  sLed.classList.remove('active');
+  sLed.classList.add('complete');
+  sTxt.textContent='Analysis complete!';
+  sMsg.textContent='Opening your profile...';
+  [1,2,3,4].forEach(n=>ok(n));
+  setTimeout(showResults,800);
+}
+
+function showResults(){
+  const p=profile;
+  document.getElementById('rSubtitle').textContent=p.sub;
+
+  /* Intel bars */
+  document.getElementById('intelEl').innerHTML=
+    p.intel.map(i=>`
+      <div class="ib-row">
+        <div class="ib-name">${i.n}</div>
+        <div class="ib-track"><div class="ib-fill" data-p="${i.p}" style="background:${i.c}"></div></div>
+        <div class="ib-pct">${i.p}%</div>
+      </div>`).join('');
+
+  /* Brain dominance */
+  document.getElementById('domL').style.width='0%';
+  document.getElementById('domR').style.width='0%';
+  document.getElementById('domLLbl').textContent=`Left Brain ${p.dL}%`;
+  document.getElementById('domRLbl').textContent=`Right Brain ${p.dR}%`;
+
+  /* Personality */
+  document.getElementById('persEl').innerHTML=
+    p.pers.map(pe=>`
+      <div class="pers-item">
+        <div class="pers-k">${pe.k}</div>
+        <div class="pers-v">${pe.v}</div>
+      </div>`).join('');
+
+  /* Careers */
+  document.getElementById('careerEl').innerHTML=
+    p.careers.map(c=>`
+      <div class="c-chip">
+        <i data-lucide="${c.i}" style="width:20px;height:20px;display:block;margin:0 auto 5px;color:#60A5FA" class="c-chip-ico"></i>
+        <div class="c-chip-n">${c.n}</div>
+      </div>`).join('');
+
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+
+  if(typeof lucide!=='undefined') lucide.createIcons();
+
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{
+      document.querySelectorAll('.ib-fill').forEach(b=>b.style.width=b.dataset.p+'%');
+      document.getElementById('domL').style.width=p.dL+'%';
+      document.getElementById('domR').style.width=p.dR+'%';
+    },150);
+  });
+}
+
+function resetScan(){
+  busy=false; done=false; prog=0;
+  dev.classList.remove('scanning','done');
+  pFill.style.width='0'; pTrack.classList.remove('show');
+  sLed.classList.remove('active','complete');
+  sTxt.textContent='Ready — tap the scanner above';
+  sMsg.textContent='';
+  document.getElementById('tapHint').style.opacity='1';
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+  [1,2,3,4].forEach(n=>{
+    const c=document.getElementById('sc'+n);
+    c.classList.remove('on','ok-step');
+  });
+  [1,2,3].forEach(n=>document.getElementById('sl'+n).style.width='0');
+}
+
+function setStep(n){
+  const c=document.getElementById('sc'+n);
+  if(c&&!c.classList.contains('ok-step'))c.classList.add('on');
+  const node=document.getElementById('sn'+n);
+  if(node)node.classList.add('on');
+  if(n>1)document.getElementById('sl'+(n-1)).style.width='100%';
+}
+function ok(n){
+  const c=document.getElementById('sc'+n);
+  if(c){c.classList.remove('on');c.classList.add('ok-step');
+    // Inline style since class ok-step not defined — use done-step
+    c.style.background='linear-gradient(135deg,#059669,#10B981)';
+    c.style.color='white';c.style.borderColor='transparent';
+  }
+  if(n<=3)document.getElementById('sl'+n).style.width='100%';
+}
+
+/* Keyboard */
+document.addEventListener('keydown',e=>{
+  if((e.key===' '||e.key==='Enter')&&!overlay.classList.contains('open')){e.preventDefault();startScan();}
+  if(e.key==='Escape')resetScan();
+});
+
+/* Init Lucide */
+function tryL(){if(typeof lucide!=='undefined')lucide.createIcons();else setTimeout(tryL,80);}
+tryL();
+</script>
+</body>
+</html>

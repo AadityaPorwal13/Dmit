@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Your DMIT Test — MindDecode</title>
+<meta name="description" content="Book your DMIT test online. Select date, time slot, and consultation type. Expert counseling sessions available online and offline across India.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<section class="page-hero">
+  <div class="neural-bg"></div>
+  <div class="hero-blob hero-blob-1" style="opacity:.2"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span style="color:rgba(255,255,255,.9)">Book Test</span></div>
+    <div class="section-badge" style="background:rgba(255,255,255,.15);color:white">
+      <i data-lucide="calendar" style="width:14px;height:14px"></i> Book Now
+    </div>
+    <h1 class="display-lg">Book Your <span style="color:var(--orange-light)">DMIT Session</span></h1>
+    <p>Simple 2-minute booking. Expert guidance within 7 days.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="booking-layout">
+
+      <!-- FORM -->
+      <div class="booking-form-wrap reveal-left">
+        <h2 style="margin-bottom:6px;font-size:1.4rem">Your Information</h2>
+        <p style="color:var(--gray-text);margin-bottom:28px;font-size:.875rem">Fill in your details below. Our team confirms within 4 hours.</p>
+
+        <form id="bookingForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Parent Name <span>*</span></label>
+              <input type="text" class="form-input" id="parentName" placeholder="Your full name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Child's Name <span>*</span></label>
+              <input type="text" class="form-input" id="childName" placeholder="Child's full name" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Child's Age <span>*</span></label>
+              <input type="number" class="form-input" id="childAge" placeholder="Age in years" min="2" max="70" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number <span>*</span></label>
+              <input type="tel" class="form-input" id="phone" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address <span>*</span></label>
+            <input type="email" class="form-input" id="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Consultation Type <span>*</span></label>
+            <select class="form-select" id="consultType" required onchange="updateServicePrice(this)">
+              <option value="">— Select Service —</option>
+              <option value="DMIT Kids Test" data-price="3499">DMIT Test for Kids — ₹3,499</option>
+              <option value="Career Counseling" data-price="4999">Career Counseling — ₹4,999</option>
+              <option value="Parenting Consultation" data-price="2499">Parenting Consultation — ₹2,499</option>
+              <option value="Student Guidance" data-price="3999">Student Guidance — ₹3,999</option>
+              <option value="Brain Dominance" data-price="1999">Brain Dominance Analysis — ₹1,999</option>
+              <option value="Learning Style" data-price="1499">Learning Style Assessment — ₹1,499</option>
+              <option value="Free Consultation" data-price="0">Free 20-min Consultation — ₹0</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Preferred Date <span>*</span></label>
+              <input type="date" class="form-input" id="date" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Session Mode <span>*</span></label>
+              <select class="form-select" id="mode" required onchange="document.getElementById('summaryMode').textContent=this.value||'—'">
+                <option value="">— Select Mode —</option>
+                <option value="Online (Zoom)">Online via Zoom</option>
+                <option value="In-Person Mumbai">In-Person — Mumbai</option>
+                <option value="In-Person Delhi">In-Person — Delhi</option>
+                <option value="Home Visit">Home Visit (Mumbai only)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Select Time Slot <span>*</span></label>
+            <div class="time-slots">
+              <div class="time-slot">9:00 AM</div>
+              <div class="time-slot">10:00 AM</div>
+              <div class="time-slot unavailable">11:00 AM</div>
+              <div class="time-slot">12:00 PM</div>
+              <div class="time-slot unavailable">2:00 PM</div>
+              <div class="time-slot">3:00 PM</div>
+              <div class="time-slot">4:00 PM</div>
+              <div class="time-slot">5:00 PM</div>
+              <div class="time-slot unavailable">6:00 PM</div>
+            </div>
+            <p style="font-size:.73rem;color:var(--gray-text);margin-top:8px;display:flex;align-items:center;gap:5px">
+              <i data-lucide="info" style="width:12px;height:12px"></i>Greyed slots are already booked
+            </p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Special Requests / Questions</label>
+            <textarea class="form-textarea" placeholder="Any specific concerns, medical conditions, or questions for our expert..."></textarea>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:22px">
+            <input type="checkbox" id="consent" required style="margin-top:3px;width:16px;height:16px;accent-color:var(--blue-deep);flex-shrink:0">
+            <label for="consent" style="font-size:.8rem;color:var(--gray-text);line-height:1.6">I agree to MindDecode's <a href="#" style="color:var(--blue-deep);text-decoration:underline">Terms of Service</a> and <a href="#" style="color:var(--blue-deep);text-decoration:underline">Privacy Policy</a>. My biometric data is encrypted and never shared.</label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">
+            <i data-lucide="lock" class="btn-icon"></i>Confirm & Proceed to Payment
+          </button>
+        </form>
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="reveal-right">
+        <div class="booking-summary">
+          <div class="summary-title">
+            <i data-lucide="receipt" style="width:18px;height:18px;color:var(--blue-deep)"></i>
+            Booking Summary
+          </div>
+          <div class="summary-item"><span class="label">Service</span><span class="value" id="summaryType">—</span></div>
+          <div class="summary-item"><span class="label">Date</span><span class="value" id="summaryDate">—</span></div>
+          <div class="summary-item"><span class="label">Time</span><span class="value" id="summaryTime">Not selected</span></div>
+          <div class="summary-item"><span class="label">Mode</span><span class="value" id="summaryMode">—</span></div>
+          <div class="summary-total">
+            <div style="font-size:.78rem;color:var(--gray-text);margin-bottom:4px">Total Amount</div>
+            <div class="amount" id="summaryPrice">₹0</div>
+          </div>
+          <div class="payment-section">
+            <div class="payment-title">
+              <i data-lucide="credit-card" style="width:14px;height:14px;color:var(--blue-deep);display:inline;vertical-align:middle;margin-right:4px"></i>
+              Payment Method
+            </div>
+            <div class="payment-methods">
+              <div class="pay-method selected">UPI</div>
+              <div class="pay-method">Card</div>
+              <div class="pay-method">NetBanking</div>
+            </div>
+            <div style="background:var(--gray-light);border-radius:11px;padding:14px;text-align:center">
+              <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px">
+                <i data-lucide="shield-check" style="width:16px;height:16px;color:#059669"></i>
+                <span style="font-size:.8rem;font-weight:600;color:#059669">Powered by Razorpay</span>
+              </div>
+              <p style="font-size:.75rem;color:var(--gray-text)">100% secure · SSL encrypted · RBI compliant</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:white;border:1px solid var(--gray-mid);border-radius:16px;padding:22px;margin-top:18px;box-shadow:var(--shadow-sm)">
+          <h4 style="font-size:.9rem;margin-bottom:14px;display:flex;align-items:center;gap:6px">
+            <i data-lucide="shield" style="width:16px;height:16px;color:var(--blue-deep)"></i>Why Book With Us
+          </h4>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--gray-text)">
+              <i data-lucide="check-circle" style="width:15px;height:15px;color:#059669;flex-shrink:0"></i>Free rescheduling up to 24 hours before
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--gray-text)">
+              <i data-lucide="check-circle" style="width:15px;height:15px;color:#059669;flex-shrink:0"></i>100% satisfaction guarantee
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--gray-text)">
+              <i data-lucide="check-circle" style="width:15px;height:15px;color:#059669;flex-shrink:0"></i>Report delivered within 5 working days
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--gray-text)">
+              <i data-lucide="check-circle" style="width:15px;height:15px;color:#059669;flex-shrink:0"></i>Biometric data encrypted & never shared
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--gray-text)">
+              <i data-lucide="check-circle" style="width:15px;height:15px;color:#059669;flex-shrink:0"></i>ISO 9001 certified process
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--blue-soft);border-radius:14px;padding:18px;margin-top:16px;text-align:center">
+          <p style="font-size:.85rem;font-weight:600;margin-bottom:6px">Need help choosing?</p>
+          <p style="font-size:.78rem;color:var(--gray-text);margin-bottom:12px">Chat with our team right now</p>
+          <a href="https://wa.me/919876543210" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;border-radius:999px;width:100%;justify-content:center;display:flex;align-items:center;gap:6px">
+            <i data-lucide="message-circle" style="width:14px;height:14px"></i>WhatsApp Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POPUP -->
+<div class="popup-overlay" id="confirmPopup">
+  <div class="popup-box" style="position:relative">
+    <div style="font-size:3.5rem;margin-bottom:14px;text-align:center">
+      <i data-lucide="party-popper" style="width:64px;height:64px;color:var(--orange);margin:0 auto;display:block"></i>
+    </div>
+    <h3 style="text-align:center">Booking Confirmed!</h3>
+    <p style="text-align:center;color:var(--gray-text);margin:8px 0 20px">We'll send confirmation details to your email and WhatsApp within 4 hours.</p>
+    <div style="background:var(--blue-soft);border-radius:11px;padding:14px;margin-bottom:20px;font-size:.84rem;color:var(--blue-deep);text-align:center">
+      Reference ID: <strong>MD-2025-<span id="refId"></span></strong>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a href="index.html" class="btn btn-outline" style="flex:1;justify-content:center">Go Home</a>
+      <a href="https://wa.me/919876543210" target="_blank" class="btn btn-primary" style="flex:1;justify-content:center;background:#25D366">
+        <i data-lucide="message-circle" class="btn-icon"></i>WhatsApp
+      </a>
+    </div>
+    <button onclick="document.getElementById('confirmPopup').classList.remove('open')" style="position:absolute;top:14px;right:14px;background:var(--gray-light);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">
+      <i data-lucide="x" style="width:14px;height:14px"></i>
+    </button>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="js/components.js"></script>
+<script src="js/main.js"></script>
+<script src="js/animations.js"></script>
+<script>
+// Set min date tomorrow
+const di=document.getElementById('date');
+if(di){const t=new Date();t.setDate(t.getDate()+1);di.min=t.toISOString().split('T')[0];}
+
+function updateServicePrice(sel){
+  const opt=sel.options[sel.selectedIndex];
+  const price=parseInt(opt.dataset.price||'0');
+  document.getElementById('summaryPrice').textContent=price===0?'FREE':'₹'+price.toLocaleString('en-IN');
+  document.getElementById('summaryType').textContent=sel.value||'—';
+}
+
+document.getElementById('date')?.addEventListener('change',function(){
+  if(this.value){
+    const d=new Date(this.value);
+    document.getElementById('summaryDate').textContent=d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  }
+});
+
+function showPopup(){
+  document.getElementById('refId').textContent=Math.floor(Math.random()*90000+10000);
+  document.getElementById('confirmPopup').classList.add('open');
+  if(typeof lucide!=='undefined')lucide.createIcons();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,635 @@
+/* =============================================
+   MindDecode — responsive.css
+   Complete mobile-first overrides.
+   Breakpoints: 1024 · 768 · 480 · 380
+   ============================================= */
+
+/* ════════════════════════════════════════════
+   TABLET  ≤ 1024px
+════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+  /* --- Hero --- */
+  .hero-inner        { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+  .hero-visual       { display: none; }
+  .hero-actions      { justify-content: center; }
+  .hero-stats        { justify-content: center; }
+  .hero-sub          { margin: 0 auto 32px; }
+
+  /* --- Grids --- */
+  .benefits-grid     { grid-template-columns: repeat(2, 1fr); }
+  .mi-grid           { grid-template-columns: repeat(4, 1fr); }
+  .wcu-grid          { grid-template-columns: repeat(3, 1fr); }
+  .counter-grid      { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .team-grid         { grid-template-columns: repeat(2, 1fr); }
+  .services-grid     { grid-template-columns: repeat(2, 1fr); }
+  .blog-grid         { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid       { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+
+  /* --- About DMIT inner --- */
+  .dmit-about-inner  { grid-template-columns: 1fr; gap: 40px; }
+  .brain-split       { max-width: 480px; margin: 0 auto; }
+
+  /* --- Booking / Contact --- */
+  .booking-layout    { grid-template-columns: 1fr; }
+  .booking-summary   { position: static; }
+  .contact-layout    { grid-template-columns: 1fr; gap: 40px; }
+
+  /* --- Blog --- */
+  .blog-featured     { grid-template-columns: 1fr; }
+
+  /* --- Scan CTA --- */
+  .scan-cta-inner    { grid-template-columns: 1fr; gap: 36px; }
+
+  /* --- About page inner grids (inline style overrides) --- */
+  div[style*="grid-template-columns:1fr 1.4fr"],
+  div[style*="grid-template-columns: 1fr 1.4fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  div[style*="grid-template-columns:repeat(3,1fr)"],
+  div[style*="grid-template-columns: repeat(3, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  div[style*="grid-template-columns:1fr 1fr;gap:80px"],
+  div[style*="grid-template-columns: 1fr 1fr; gap: 80px"] {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+/* ════════════════════════════════════════════
+   MOBILE  ≤ 768px
+════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root { --nav-h: 66px; }
+
+  /* ── Global spacing ── */
+  .section           { padding: 56px 0; }
+  .section-sm        { padding: 36px 0; }
+  .container         { padding: 0 16px; }
+  .section-header    { margin-bottom: 32px; }
+  .section-header h2 { font-size: clamp(1.5rem, 5.5vw, 2rem); }
+  .section-header p  { font-size: .875rem; }
+
+  /* ── Typography ── */
+  .display-xl { font-size: clamp(1.8rem, 6.5vw, 2.4rem); line-height: 1.15; }
+  .display-lg { font-size: clamp(1.5rem, 5.5vw, 2rem); }
+  .display-md { font-size: clamp(1.25rem, 4.5vw, 1.6rem); }
+  .display-sm { font-size: clamp(1.05rem, 3.5vw, 1.3rem); }
+
+  /* ── Navbar ── */
+  .nav-links  { display: none; }
+  .nav-cta    { display: none; }
+  .hamburger  { display: flex; }
+  .logo-text  { font-size: 1.1rem; }
+
+  /* ── Mobile menu ── */
+  .mobile-menu       { padding: 14px 16px; gap: 2px; }
+  .mobile-menu a     { padding: 12px 14px; font-size: .9rem; border-radius: 10px; }
+  .mm-book           { margin-top: 10px !important; padding: 14px !important; border-radius: 12px !important; font-size: .9rem !important; }
+
+  /* ── Hero ── */
+  .hero              { min-height: 100svh; padding-top: var(--nav-h); padding-bottom: 48px; }
+  .hero-inner        { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+  .hero-visual       { display: none; }
+  .hero-badge        { font-size: .72rem; padding: 5px 14px; }
+  .hero-sub          { font-size: .92rem; max-width: 100%; }
+  .hero-actions      { flex-direction: column; align-items: stretch; gap: 10px; max-width: 320px; margin: 0 auto 32px; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+  .hero-stats        { flex-wrap: wrap; justify-content: center; gap: 14px 24px; }
+  .hero-stat-divider { display: none; }
+  .hero-stat .num    { font-size: 1.6rem; }
+
+  /* ── About DMIT ── */
+  .dmit-about-inner  { grid-template-columns: 1fr; gap: 28px; }
+  .info-cards        { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .info-card         { padding: 16px 12px; }
+
+  /* ── Brain split ── */
+  .brain-split       { flex-direction: row; max-width: 100%; border-radius: 14px; }
+  .brain-left, .brain-right { padding: 20px 14px; }
+  .brain-trait       { font-size: .72rem; padding: 6px 8px; }
+
+  /* ── Benefits ── */
+  .benefits-grid     { grid-template-columns: 1fr; gap: 14px; }
+  .benefit-card      { padding: 22px 18px; }
+  .benefit-icon      { width: 52px; height: 52px; }
+
+  /* ── How It Works ── */
+  .hiw-steps         { flex-direction: column; align-items: stretch; gap: 0; }
+  .hiw-steps::before { display: none; }
+  .hiw-step {
+    flex-direction: row;
+    text-align: left;
+    gap: 14px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--gray-mid);
+    max-width: 100%;
+    width: 100%;
+  }
+  .hiw-step:last-child    { border-bottom: none; }
+  .hiw-step .step-icon-wrap { display: none; }
+  .hiw-step .step-num     { margin: 0; flex-shrink: 0; width: 48px; height: 48px; font-size: .95rem; }
+  .hiw-step .step-num::after { display: none; }
+  .hiw-step-text          { flex: 1; }
+  .hiw-step h4            { font-size: .92rem; margin-bottom: 3px; }
+  .hiw-step p             { font-size: .8rem; }
+
+  /* ── Multiple Intelligence ── */
+  .mi-grid           { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .mi-card           { padding: 18px 10px; border-radius: 14px; }
+  .mi-circle         { width: 54px; height: 54px; margin-bottom: 12px; }
+  .mi-circle svg, .mi-circle i { width: 24px; height: 24px; }
+  .mi-card h4        { font-size: .85rem; }
+  .mi-card p         { font-size: .72rem; }
+
+  /* ── Why Choose Us ── */
+  .wcu-grid          { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .wcu-card          { padding: 18px 12px; border-radius: 14px; }
+  .wcu-card .stat    { font-size: 1.6rem; }
+  .wcu-card h4       { font-size: .82rem; }
+  .wcu-card p        { font-size: .76rem; }
+  .wcu-card .icon-wrap svg,
+  .wcu-card .icon-wrap i { width: 26px; height: 26px; }
+
+  /* ── Counter ── */
+  .counter-grid      { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .counter-num       { font-size: 1.9rem; }
+  .counter-lbl       { font-size: .8rem; }
+
+  /* ── Report preview ── */
+  .report-preview    { border-radius: 14px; }
+  .report-header     { padding: 18px 16px; flex-direction: column; gap: 6px; }
+  .report-body       { padding: 18px 16px; }
+  .report-intelligence { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
+  /* Fix 2-col sub-grid inside report */
+  .report-body > div[style*="grid-template-columns:1fr 1fr"],
+  .report-body > div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* ── Scan CTA section ── */
+  .scan-cta-inner    { grid-template-columns: 1fr; gap: 28px; }
+  .scan-preview-box  { padding: 24px 16px; border-radius: 18px; }
+  .scan-btn          { padding: 13px 24px; font-size: .875rem; }
+  .fp-preview-svg    { width: 110px !important; height: 138px !important; }
+
+  /* ── Testimonials ── */
+  .testimonial-card  { min-width: calc(100vw - 32px); padding: 22px 18px; }
+  blockquote         { font-size: .875rem; }
+
+  /* ── CTA Banner ── */
+  .cta-banner        { padding: 60px 16px; }
+  .cta-banner h2     { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+  .cta-banner p      { font-size: .875rem; }
+  .cta-actions       { flex-direction: column; align-items: stretch; max-width: 300px; margin: 0 auto; gap: 10px; }
+  .cta-actions .btn  { width: 100%; justify-content: center; }
+
+  /* ── Page hero ── */
+  .page-hero         { padding: 108px 0 50px; }
+  .page-hero h1      { font-size: clamp(1.5rem, 5.5vw, 2rem); }
+  .page-hero p       { font-size: .875rem; }
+  .breadcrumb        { font-size: .75rem; }
+
+  /* ── About page ── */
+  /* Mission/Vision/Values 3-col → 1-col */
+  .about-mvv-grid,
+  div[style*="grid-template-columns:repeat(3,1fr);gap:24px"],
+  div[style*="grid-template-columns: repeat(3, 1fr); gap: 24px"] {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  /* Founder grid */
+  div[style*="grid-template-columns:1fr 1.4fr"],
+  div[style*="grid-template-columns: 1fr 1.4fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .team-grid         { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
+  /* Timeline + certs grid */
+  div[style*="grid-template-columns:1fr 1fr;gap:80px"],
+  div[style*="grid-template-columns: 1fr 1fr; gap: 80px"] {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+  .timeline          { padding-left: 20px; }
+
+  /* ── DMIT page ── */
+  /* What is DMIT inner grid */
+  div[style*="grid-template-columns:1.2fr 1fr;gap:80px"],
+  div[style*="grid-template-columns: 1.2fr 1fr; gap: 80px"] {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  /* Methodology 3-col */
+  div[style*="grid-template-columns:repeat(3,1fr);gap:22px"],
+  div[style*="grid-template-columns: repeat(3, 1fr); gap: 22px"] {
+    grid-template-columns: 1fr !important;
+  }
+  .myths-grid        { grid-template-columns: 1fr; gap: 14px; }
+  /* Check mark grid inside DMIT */
+  div[style*="grid-template-columns:1fr 1fr;gap:10px"],
+  div[style*="grid-template-columns: 1fr 1fr; gap: 10px"] {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* ── Services ── */
+  .services-grid     { grid-template-columns: 1fr; }
+  .service-card-top  { padding: 26px 18px 18px; }
+  .service-card-body { padding: 18px; }
+  .service-icon-wrap { width: 56px; height: 56px; }
+  /* Comparison table — allow horizontal scroll */
+  div[style*="overflow-x:auto"] table { min-width: 480px; }
+
+  /* ── Booking ── */
+  .booking-layout    { grid-template-columns: 1fr; }
+  .booking-form-wrap { padding: 22px 14px; border-radius: 14px; }
+  .booking-summary   { position: static; border-radius: 14px; padding: 22px 14px; }
+  .form-row          { grid-template-columns: 1fr; }
+  .time-slots        { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .time-slot         { padding: 9px 4px; font-size: .72rem; border-radius: 8px; }
+  .payment-methods   { gap: 6px; }
+
+  /* ── Contact ── */
+  .contact-layout    { grid-template-columns: 1fr; gap: 28px; }
+  .contact-cards     { grid-template-columns: 1fr; gap: 10px; }
+  /* Cities 3-col */
+  div[style*="grid-template-columns:repeat(3,1fr);gap:9px"],
+  div[style*="grid-template-columns: repeat(3, 1fr); gap: 9px"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  /* Contact form wrap */
+  div[style*="border-radius:22px;padding:36px"] {
+    padding: 22px 16px !important;
+    border-radius: 16px !important;
+  }
+
+  /* ── Blog ── */
+  .blog-grid         { grid-template-columns: 1fr; }
+  .blog-featured     { grid-template-columns: 1fr; }
+  .blog-search       { max-width: 100%; }
+  .blog-cats         { gap: 6px; }
+  .blog-cat          { padding: 6px 12px; font-size: .78rem; }
+  .blog-img          { height: 150px !important; font-size: 3rem !important; }
+  /* Featured main image */
+  .blog-featured-card .blog-img[style*="height:280px"] { height: 190px !important; }
+
+  /* ── Footer ── */
+  .footer            { padding: 50px 0 26px; }
+  .footer-grid       { grid-template-columns: 1fr; gap: 26px; }
+  .footer-bottom     { flex-direction: column; gap: 12px; text-align: center; align-items: center; }
+  .footer-certs      { flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .newsletter-form   { flex-direction: row; } /* keep side-by-side on md */
+
+  /* ── WA float ── */
+  .wa-float          { width: 50px; height: 50px; bottom: 16px; right: 16px; }
+  .wa-tooltip        { display: none; }
+
+  /* ── Popup ── */
+  .popup-box         { padding: 28px 16px; border-radius: 18px; }
+
+  /* ── Inline grids used across pages (universal catch) ── */
+  /* 3-col any gap → 1-col */
+  div[style*="grid-template-columns:repeat(3,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Founder / Timeline 2-col large gap → 1 col */
+  div[style*="gap:80px"] {
+    gap: 32px !important;
+  }
+  div[style*="gap: 80px"] {
+    gap: 32px !important;
+  }
+  /* 2-col with 60px gap → 1 col */
+  div[style*="gap:60px"],
+  div[style*="gap: 60px"] {
+    gap: 28px !important;
+  }
+}
+
+/* ════════════════════════════════════════════
+   SMALL PHONE  ≤ 480px
+════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  :root { --nav-h: 62px; }
+  .container         { padding: 0 12px; }
+
+  /* Typography */
+  .display-xl { font-size: 1.7rem; }
+  .display-lg { font-size: 1.4rem; }
+  .display-md { font-size: 1.2rem; }
+
+  /* Nav */
+  .logo-img   { width: 34px; height: 34px; }
+  .logo-text  { font-size: 1rem; }
+
+  /* Hero */
+  .hero-actions      { max-width: 100%; }
+  .hero-stat .num    { font-size: 1.4rem; }
+  .hero-badge        { font-size: .68rem; }
+
+  /* Info cards 1-col */
+  .info-cards        { grid-template-columns: 1fr; }
+
+  /* MI 2-col stays */
+  .mi-grid           { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .mi-card           { padding: 16px 8px; border-radius: 12px; }
+  .mi-circle         { width: 48px; height: 48px; }
+  .mi-circle svg, .mi-circle i { width: 20px; height: 20px; }
+  .mi-card h4        { font-size: .78rem; }
+  .mi-card p         { display: none; }
+
+  /* WCU 2-col stays, no description */
+  .wcu-grid          { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .wcu-card          { padding: 14px 10px; }
+  .wcu-card .stat    { font-size: 1.4rem; }
+  .wcu-card p        { display: none; }
+
+  /* Counter */
+  .counter-grid      { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .counter-num       { font-size: 1.7rem; }
+
+  /* Benefits */
+  .benefit-card      { padding: 20px 14px; }
+
+  /* HIW step number */
+  .hiw-step .step-num { width: 44px; height: 44px; font-size: .85rem; }
+
+  /* Report */
+  .report-intelligence { grid-template-columns: repeat(2, 1fr) !important; }
+  .report-body > div[style*="1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Brain split vertical on tiny */
+  .brain-split       { flex-direction: column; }
+  .brain-left, .brain-right { padding: 18px 14px; border-radius: 0; }
+  .brain-left        { border-radius: 14px 14px 0 0; }
+  .brain-right       { border-radius: 0 0 14px 14px; }
+  .brain-traits      { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .brain-trait       { font-size: .68rem; padding: 5px 8px; }
+
+  /* Booking time slots 2-col */
+  .time-slots        { grid-template-columns: repeat(2, 1fr); gap: 5px; }
+  .time-slot         { font-size: .68rem; padding: 8px 2px; }
+  .payment-methods   { flex-wrap: wrap; }
+
+  /* Testimonials */
+  .testimonial-card  { min-width: calc(100vw - 24px); padding: 18px 14px; }
+
+  /* CTA */
+  .cta-banner        { padding: 48px 12px; }
+  .cta-banner h2     { font-size: 1.25rem; }
+  .cta-actions       { max-width: 100%; }
+
+  /* Page hero */
+  .page-hero         { padding: 94px 0 42px; }
+  .page-hero h1      { font-size: 1.4rem; }
+
+  /* Section badge */
+  .section-badge     { font-size: .68rem; padding: 4px 12px; }
+
+  /* Blog */
+  .blog-cats         { gap: 4px; }
+  .blog-cat          { padding: 5px 10px; font-size: .72rem; }
+
+  /* Footer */
+  .newsletter-form   { flex-direction: column; gap: 8px; }
+  .newsletter-form input { border-radius: 10px; }
+  .newsletter-form .btn  { border-radius: 10px; width: 100%; justify-content: center; }
+  .footer-social     { flex-wrap: wrap; }
+
+  /* Services */
+  .services-grid     { gap: 14px; }
+  .service-card-top  { padding: 22px 14px 16px; }
+  .service-card-body { padding: 16px 14px; }
+  .service-price     { font-size: 1rem; }
+
+  /* About team */
+  .team-grid         { max-width: 100%; }
+  .team-card         { padding: 28px 16px; }
+  .team-avatar       { width: 80px; height: 80px; }
+  .team-avatar svg, .team-avatar i { width: 36px; height: 36px; }
+
+  /* Contact form */
+  div[style*="border-radius:22px"],
+  div[style*="border-radius: 22px"] {
+    border-radius: 14px !important;
+  }
+
+  /* Popup */
+  .popup-box         { padding: 24px 14px; }
+
+  /* Scan CTA */
+  .scan-preview-box  { padding: 20px 12px; }
+  .scan-btn          { padding: 12px 20px; font-size: .82rem; width: 100%; justify-content: center; }
+}
+
+/* ════════════════════════════════════════════
+   TINY PHONE  ≤ 380px
+════════════════════════════════════════════ */
+@media (max-width: 380px) {
+  :root { --nav-h: 60px; }
+  .container         { padding: 0 10px; }
+
+  .display-xl        { font-size: 1.5rem; }
+  .display-lg        { font-size: 1.3rem; }
+
+  /* Hide logo text — just show icon */
+  .logo-text         { display: none; }
+
+  /* WCU → 1-col on tiny */
+  .wcu-grid          { grid-template-columns: 1fr; }
+
+  /* MI stays 2-col */
+  .mi-grid           { grid-template-columns: repeat(2, 1fr); }
+
+  /* Hero */
+  .hero-stats        { gap: 10px 16px; }
+  .hero-stat .num    { font-size: 1.3rem; }
+
+  /* HIW step */
+  .hiw-step .step-num { width: 40px; height: 40px; font-size: .8rem; }
+
+  /* Booking time slots */
+  .time-slots        { grid-template-columns: repeat(2, 1fr); }
+
+  /* Buttons */
+  .btn-lg            { padding: 13px 18px; font-size: .85rem; }
+
+  /* CTA actions vertical already */
+  .cta-actions       { max-width: 100%; }
+
+  /* Page hero */
+  .page-hero         { padding: 88px 0 38px; }
+
+  /* Blog cats */
+  .blog-cat          { padding: 4px 8px; font-size: .68rem; }
+
+  /* Footer */
+  .footer-grid       { gap: 22px; }
+}
+
+/* ════════════════════════════════════════════
+   LANDSCAPE PHONES
+════════════════════════════════════════════ */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero              { min-height: auto; padding: 80px 0 40px; }
+  .hero-stats        { display: none; }
+  .page-hero         { padding: 86px 0 36px; }
+}
+
+/* ════════════════════════════════════════════
+   LARGE DESKTOP  ≥ 1280px
+════════════════════════════════════════════ */
+@media (min-width: 1280px) {
+  .container         { max-width: 1240px; }
+  .benefits-grid     { grid-template-columns: repeat(3, 1fr); }
+  .mi-grid           { grid-template-columns: repeat(4, 1fr); }
+  .wcu-grid          { grid-template-columns: repeat(3, 1fr); }
+  .team-grid         { grid-template-columns: repeat(3, 1fr); }
+  .hero-inner        { gap: 80px; }
+}
+
+/* ════════════════════════════════════════════
+   TOUCH DEVICES — disable hover transforms
+════════════════════════════════════════════ */
+@media (hover: none) {
+  .card:hover,
+  .benefit-card:hover,
+  .mi-card:hover,
+  .service-card:hover,
+  .team-card:hover,
+  .blog-card:hover,
+  .blog-featured-card:hover,
+  .wcu-card:hover,
+  .contact-info-card:hover { transform: none !important; }
+}
+
+/* ════════════════════════════════════════════
+   REDUCED MOTION
+════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+  }
+}
+
+/* ════════════════════════════════════════════
+   SCAN DEMO PAGE — specific overrides
+════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* scanner device */
+  .device            { width: 260px !important; height: 360px !important; }
+  .plate             { width: 200px !important; height: 240px !important; }
+  .fp-svg            { width: 150px !important; height: 186px !important; }
+  .hand-wrap         { width: 216px !important; height: 206px !important; }
+  .prog-track        { width: 230px !important; }
+  /* step strip */
+  .steps-row         { gap: 0; }
+  .s-node            { width: 58px; }
+  .s-lbl             { font-size: .62rem; }
+  .s-line            { min-width: 10px; max-width: 24px; }
+  /* results card */
+  .r-head            { padding: 18px 14px 16px; border-radius: 16px 16px 0 0; }
+  .r-body            { padding: 16px 14px 18px; }
+  .r-card            { border-radius: 18px; }
+  .r-head-txt h2     { font-size: 1rem; }
+  .career-grid       { grid-template-columns: repeat(2, 1fr) !important; }
+  .pers-grid         { grid-template-columns: 1fr 1fr !important; }
+  .r-actions         { flex-direction: column; }
+  .r-btn-p, .r-btn-g { min-width: 100% !important; }
+}
+
+@media (max-width: 420px) {
+  .device            { width: 228px !important; height: 316px !important; }
+  .plate             { width: 174px !important; height: 208px !important; }
+  .fp-svg            { width: 130px !important; height: 162px !important; }
+  .hand-wrap         { width: 188px !important; height: 180px !important; }
+  .steps-row         { display: none; }
+  .scan-header h1    { font-size: 1.3rem; }
+  .pers-grid         { grid-template-columns: 1fr !important; }
+  .career-grid       { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@media (max-width: 360px) {
+  .device            { width: 206px !important; height: 285px !important; }
+  .plate             { width: 158px !important; height: 186px !important; }
+  .fp-svg            { width: 118px !important; height: 146px !important; }
+  .hand-wrap         { width: 170px !important; height: 160px !important; }
+  .prog-track        { width: 190px !important; }
+  .scan-header h1    { font-size: 1.15rem; }
+}
+
+/* ═══════════════════════════════════════════
+   UTILITY CLASS RESPONSIVE OVERRIDES
+═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .mvv-grid    { grid-template-columns: repeat(2, 1fr); }
+  .col2-lg     { grid-template-columns: 1fr; gap: 36px; }
+  .col2-eq     { grid-template-columns: 1fr; gap: 36px; }
+  .col2-dmit   { grid-template-columns: 1fr; gap: 36px; }
+  .method-grid { grid-template-columns: repeat(2, 1fr); }
+  .report-inner-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .mvv-grid        { grid-template-columns: 1fr; gap: 14px; }
+  .col2-lg         { grid-template-columns: 1fr; gap: 28px; }
+  .col2-eq         { grid-template-columns: 1fr; gap: 28px; }
+  .col2-dmit       { grid-template-columns: 1fr; gap: 24px; }
+  .method-grid     { grid-template-columns: 1fr; }
+  .check-grid      { grid-template-columns: 1fr; gap: 8px; }
+  .contact-form-box { padding: 22px 16px; border-radius: 16px; }
+  .cities-grid     { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .report-inner-grid { grid-template-columns: 1fr; gap: 12px; }
+  .scan-feature-list { gap: 10px; margin-bottom: 24px; }
+  .scan-feature-item { font-size: .85rem; }
+}
+
+@media (max-width: 480px) {
+  .mvv-grid        { gap: 12px; }
+  .contact-form-box { padding: 18px 12px; border-radius: 14px; }
+  .cities-grid     { grid-template-columns: repeat(2, 1fr); }
+  .check-grid      { grid-template-columns: 1fr; }
+}
+
+
+/* ═══════════════════════════════════════════
+   UTILITY CLASS RESPONSIVE OVERRIDES
+═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .mvv-grid    { grid-template-columns: repeat(2, 1fr); }
+  .col2-lg     { grid-template-columns: 1fr; gap: 36px; }
+  .col2-eq     { grid-template-columns: 1fr; gap: 36px; }
+  .col2-dmit   { grid-template-columns: 1fr; gap: 36px; }
+  .method-grid { grid-template-columns: repeat(2, 1fr); }
+  .report-inner-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .mvv-grid        { grid-template-columns: 1fr; gap: 14px; }
+  .col2-lg         { grid-template-columns: 1fr; gap: 28px; }
+  .col2-eq         { grid-template-columns: 1fr; gap: 28px; }
+  .col2-dmit       { grid-template-columns: 1fr; gap: 24px; }
+  .method-grid     { grid-template-columns: 1fr; }
+  .check-grid      { grid-template-columns: 1fr; gap: 8px; }
+  .contact-form-box { padding: 22px 16px; border-radius: 16px; }
+  .cities-grid     { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .report-inner-grid { grid-template-columns: 1fr; gap: 12px; }
+  .scan-feature-list { gap: 10px; margin-bottom: 24px; }
+  .scan-feature-item { font-size: .85rem; }
+}
+
+@media (max-width: 480px) {
+  .mvv-grid        { gap: 12px; }
+  .contact-form-box { padding: 18px 12px; border-radius: 14px; }
+  .cities-grid     { grid-template-columns: repeat(2, 1fr); }
+  .check-grid      { grid-template-columns: 1fr; }
+}
