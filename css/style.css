@@ -107,7 +107,7 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
 .section-badge span { font-size: 1rem; }
 
 .section-header { text-align: center; margin-bottom: 60px; }
-.section-header p { color: var(--gray-text); max-width: 600px; margin: 12px auto 0; font-size: 1.05rem; }
+.section-header p { color: var(--gray-text); max-width: min(600px,100%); margin: 12px auto 0; font-size: 1.05rem; }
 
 /* ─── Buttons ───────────────────────────────── */
 .btn {
@@ -515,7 +515,7 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
   display: flex; gap: 24px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .testimonial-card {
-  min-width: 380px; background: white; border-radius: var(--radius-lg);
+  min-width: 0; background: white; border-radius: var(--radius-lg);
   padding: 32px; border: 1px solid var(--gray-mid); box-shadow: var(--shadow-sm);
   transition: var(--transition);
 }
@@ -666,7 +666,7 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
   text-align: center; position: relative; overflow: hidden;
 }
 .page-hero h1 { color: white; margin-bottom: 16px; }
-.page-hero p  { color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+.page-hero p  { color: rgba(255,255,255,0.8); max-width: min(600px,100%); margin: 0 auto; font-size: 1.1rem; }
 .breadcrumb {
   display: flex; align-items: center; justify-content: center;
   gap: 8px; margin-bottom: 24px; font-size: 0.875rem;
@@ -778,7 +778,7 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
 .service-price span { font-size: 0.8rem; font-weight: 400; color: var(--gray-text); }
 
 /* ─── Booking Page ──────────────────────────── */
-.booking-layout { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+.booking-layout { display: grid; grid-template-columns: 1fr minmax(0, 360px); gap: 48px; align-items: start; }
 .booking-form-wrap {
   background: white; border-radius: var(--radius-xl);
   padding: 48px; box-shadow: var(--shadow-lg); border: 1px solid var(--gray-mid);
@@ -1008,7 +1008,7 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
 .popup-overlay.open { display: flex; }
 .popup-box {
   background: white; border-radius: var(--radius-xl); padding: 48px;
-  max-width: 480px; width: 90%; text-align: center;
+  max-width: min(480px,100%); width: 90%; text-align: center;
   box-shadow: var(--shadow-lg); animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 @keyframes popIn { from{transform:scale(0.8); opacity:0} to{transform:scale(1); opacity:1} }
@@ -1083,349 +1083,6 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
 }
 @keyframes scanDotPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.6} }
 
-@media (max-width: 768px) {
-  .scan-cta-inner { grid-template-columns: 1fr; gap: 40px; }
-  .scan-preview-box { padding: 28px 20px; }
-}
-
-
-/* =============================================
-   LUCIDE ICON SYSTEM
-   ============================================= */
-
-/* Nav icons */
-.nav-icon {
-  width: 14px; height: 14px;
-  stroke-width: 2; vertical-align: middle;
-  margin-right: 5px; position: relative; top: -1px;
-  display: inline-block;
-}
-.mm-icon {
-  width: 18px; height: 18px;
-  stroke-width: 2; vertical-align: middle;
-  margin-right: 10px; color: var(--blue-deep);
-  display: inline-block; flex-shrink: 0;
-}
-.btn-icon {
-  width: 15px; height: 15px;
-  stroke-width: 2; vertical-align: middle;
-  margin-right: 6px; display: inline-block;
-}
-.fc-icon {
-  width: 14px; height: 14px;
-  stroke-width: 2; color: var(--orange-light);
-  flex-shrink: 0; margin-right: 0;
-  display: inline-block;
-}
-.cert-icon {
-  width: 11px; height: 11px;
-  stroke-width: 2; vertical-align: middle;
-  margin-right: 4px; display: inline-block;
-}
-
-/* Section badge icons */
-.section-badge i,
-.section-badge svg {
-  width: 14px; height: 14px;
-  stroke-width: 2.5; vertical-align: middle;
-}
-
-/* Benefit card icons — container gets Lucide SVG */
-.benefit-icon svg,
-.benefit-icon i {
-  width: 32px; height: 32px;
-  stroke-width: 1.8; color: var(--blue-deep);
-  transition: var(--transition);
-}
-.benefit-card:hover .benefit-icon svg,
-.benefit-card:hover .benefit-icon i {
-  color: white;
-  stroke-width: 2;
-}
-
-/* MI card circle icons */
-.mi-circle svg,
-.mi-circle i {
-  width: 36px; height: 36px;
-  stroke-width: 1.8; color: var(--blue-deep);
-  transition: var(--transition);
-}
-.mi-card:hover .mi-circle svg,
-.mi-card:hover .mi-circle i { color: white; }
-
-/* WCU card icons */
-.wcu-card .icon-wrap svg,
-.wcu-card .icon-wrap i {
-  width: 36px; height: 36px;
-  stroke-width: 1.8; color: white;
-}
-
-/* Service card icons */
-.service-icon-wrap svg,
-.service-icon-wrap i {
-  width: 32px; height: 32px;
-  stroke-width: 1.8; color: white;
-}
-
-/* Team, contact, info card icons */
-.contact-icon svg,
-.contact-icon i {
-  width: 22px; height: 22px;
-  stroke-width: 2; color: var(--blue-deep);
-}
-.info-card svg,
-.info-card i {
-  width: 28px; height: 28px;
-  stroke-width: 1.8; color: var(--blue-deep);
-  margin-bottom: 8px;
-}
-
-/* HIW step icons */
-.step-icon-wrap svg,
-.step-icon-wrap i {
-  width: 28px; height: 28px;
-  stroke-width: 1.8; color: var(--blue-deep);
-}
-
-/* Footer social icon sizing */
-.social-link svg,
-.social-link i {
-  width: 16px; height: 16px;
-  stroke-width: 2;
-}
-
-/* Footer contact list */
-.footer-contact-list {
-  display: flex; flex-direction: column; gap: 10px; margin-top: 16px;
-}
-.footer-contact-item {
-  display: flex; align-items: center; gap: 8px;
-  font-size: .82rem; color: rgba(255,255,255,.55);
-  text-decoration: none; transition: var(--transition);
-}
-.footer-contact-item:hover { color: var(--orange-light); }
-
-/* Mobile menu book btn */
-.mm-book {
-  margin-top: 12px !important;
-  width: 100% !important;
-  justify-content: center !important;
-  display: flex !important;
-}
-
-/* =============================================
-   DEEP MOBILE RESPONSIVE OVERHAUL
-   ============================================= */
-
-/* ─── Touch targets everywhere ─── */
-@media (max-width: 768px) {
-
-  /* Hero */
-  .hero {
-    padding-top: calc(var(--nav-h) + 20px);
-    padding-bottom: 60px;
-    min-height: auto;
-  }
-  .hero-inner {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    text-align: center;
-  }
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-  .hero-actions .btn {
-    width: 100%;
-    justify-content: center;
-  }
-  .hero-stats {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px 32px;
-  }
-  .hero-stat-divider { display: none; }
-  .hero-visual { display: none; }
-  .hero-sub { font-size: .95rem; }
-
-  /* About DMIT */
-  .dmit-about-inner {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .brain-split { max-width: 100%; }
-  .info-cards { grid-template-columns: 1fr 1fr; }
-
-  /* Benefits */
-  .benefits-grid { grid-template-columns: 1fr; }
-  .benefit-card { padding: 24px 20px; }
-
-  /* HIW */
-  .hiw-steps {
-    flex-direction: column;
-    align-items: center;
-    gap: 28px;
-  }
-  .hiw-steps::before { display: none; }
-  .hiw-step { max-width: 280px; width: 100%; }
-
-  /* MI */
-  .mi-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .mi-card { padding: 20px 14px; }
-  .mi-circle { width: 64px; height: 64px; }
-
-  /* WCU */
-  .wcu-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-  .wcu-card { padding: 20px 14px; }
-  .wcu-card .stat { font-size: 1.8rem; }
-
-  /* Counter */
-  .counter-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-
-  /* Testimonials */
-  .testimonial-card { min-width: calc(100vw - 48px); }
-
-  /* CTA */
-  .cta-actions { flex-direction: column; align-items: stretch; }
-  .cta-actions .btn { width: 100%; justify-content: center; }
-  .cta-banner h2 { font-size: 1.6rem; }
-  .cta-banner { padding: 60px 20px; }
-
-  /* About page */
-  .team-grid { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; }
-  .dmit-about-inner { grid-template-columns: 1fr; }
-
-  /* Services */
-  .services-grid { grid-template-columns: 1fr; }
-
-  /* Booking */
-  .booking-layout { grid-template-columns: 1fr; }
-  .booking-form-wrap { padding: 24px 16px; border-radius: 16px; }
-  .booking-summary { position: static; margin-top: 0; }
-  .form-row { grid-template-columns: 1fr; }
-  .time-slots { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .time-slot { padding: 8px 4px; font-size: .75rem; }
-
-  /* Contact */
-  .contact-layout { grid-template-columns: 1fr; gap: 32px; }
-
-  /* Blog */
-  .blog-grid { grid-template-columns: 1fr; }
-  .blog-featured { grid-template-columns: 1fr; }
-  .blog-cats { gap: 6px; }
-  .blog-cat { padding: 6px 12px; font-size: .78rem; }
-
-  /* Footer */
-  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
-  .footer-bottom {
-    flex-direction: column;
-    gap: 14px;
-    text-align: center;
-    align-items: center;
-  }
-  .footer-certs { flex-wrap: wrap; justify-content: center; }
-  .footer { padding: 56px 0 28px; }
-
-  /* Myths */
-  .myths-grid { grid-template-columns: 1fr; }
-
-  /* Section spacing */
-  .section { padding: 56px 0; }
-  .section-sm { padding: 36px 0; }
-  .section-header { margin-bottom: 32px; }
-  .section-header p { font-size: .9rem; }
-
-  /* Nav icon hide on mobile links (shown in hamburger menu) */
-  .nav-links .nav-icon { display: none; }
-
-  /* Page hero */
-  .page-hero { padding: 110px 0 50px; }
-  .page-hero h1 { font-size: 1.8rem; }
-  .page-hero p { font-size: .9rem; }
-
-  /* Report preview */
-  .report-intelligence { grid-template-columns: repeat(2,1fr); }
-
-  /* WA float */
-  .wa-float { width: 50px; height: 50px; bottom: 16px; right: 16px; }
-  .wa-float svg { width: 22px; height: 22px; }
-  .wa-tooltip { display: none; }
-
-  /* Scan CTA */
-  .scan-cta-inner { grid-template-columns: 1fr; gap: 32px; }
-
-  /* Nav cta buttons */
-  .nav-cta { gap: 8px; }
-  .nav-cta .btn { padding: 8px 14px; font-size: .8rem; }
-}
-
-@media (max-width: 480px) {
-  :root { --nav-h: 64px; }
-  .container { padding: 0 14px; }
-
-  .display-xl { font-size: 1.75rem; }
-  .display-lg { font-size: 1.5rem; }
-  .display-md { font-size: 1.25rem; }
-
-  .mi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .wcu-grid { grid-template-columns: 1fr 1fr; }
-  .info-cards { grid-template-columns: 1fr; }
-  .benefits-grid { grid-template-columns: 1fr; }
-  .time-slots { grid-template-columns: repeat(2, 1fr); }
-  .payment-methods { flex-wrap: wrap; }
-
-  /* Hiw step full width on tiny screens */
-  .hiw-step { max-width: 100%; padding: 0 8px; }
-
-  /* Booking form */
-  .booking-form-wrap { padding: 20px 14px; }
-
-  /* Blog search */
-  .blog-search { max-width: 100%; }
-
-  /* Brain split stacked */
-  .brain-split { flex-direction: column; }
-  .brain-left, .brain-right { padding: 24px 16px; }
-
-  /* Nav logo text hide on very small */
-  .logo-text { font-size: 1.1rem; }
-
-  /* Section badge text */
-  .section-badge { font-size: .72rem; padding: 5px 12px; }
-
-  /* HIW connecting line */
-  .hiw-steps::before { display: none; }
-
-  /* Team grid */
-  .team-grid { max-width: 100%; }
-
-  /* CTA banner */
-  .cta-banner { padding: 48px 16px; }
-  .cta-banner h2 { font-size: 1.4rem; }
-
-  /* Footer social */
-  .footer-social { flex-wrap: wrap; }
-
-  /* Pagination */
-  .pagination { gap: 4px; }
-  .page-btn { width: 34px; height: 34px; font-size: .8rem; }
-
-  /* Popup */
-  .popup-box { padding: 28px 16px; }
-}
-
-/* ─── Landscape phone fix ─── */
-@media (max-width: 768px) and (orientation: landscape) {
-  .hero { min-height: auto; padding: 80px 0 40px; }
-  .scan-page { min-height: auto; padding: 80px 20px 40px; }
-}
-
-/* ─── Large screens ─── */
-@media (min-width: 1280px) {
-  .benefits-grid { grid-template-columns: repeat(3, 1fr); }
-  .wcu-grid { grid-template-columns: repeat(3, 1fr); }
-}
 
 /* ─── HIW step icon wrap ─── */
 .step-icon-wrap {
@@ -1546,3 +1203,39 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
+
+
+/* ═══════════════════════════════════════════
+   OVERFLOW FIX — root cause patch
+   Prevents horizontal scroll on all screens
+═══════════════════════════════════════════ */
+
+/* Global overflow guard */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* All sections + containers can't overflow */
+section, .section, .page-hero, .hero, .cta-banner,
+.footer, .wcu, .hiw, .dmit-about, .scan-cta-section {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Hero blobs — clip inside hero only */
+.hero-bg, .hero { overflow: hidden; }
+.hero-blob {
+  pointer-events: none;
+  /* Keep fixed px size but position won't bleed because parent clips */
+}
+
+/* Testimonial track — clip its parent */
+.testimonials-wrap { overflow: hidden; }
+.testimonial-track { overflow: visible; } /* track itself scrolls via transform */
+
+/* Orbit dot container */
+.brain-container { overflow: visible; }
+
+/* Inline images and svgs */
+img, svg { max-width: 100%; height: auto; }

@@ -600,36 +600,246 @@
   .check-grid      { grid-template-columns: 1fr; }
 }
 
-
 /* ═══════════════════════════════════════════
-   UTILITY CLASS RESPONSIVE OVERRIDES
+   OVERFLOW FIXES — mobile-specific
 ═══════════════════════════════════════════ */
-@media (max-width: 1024px) {
-  .mvv-grid    { grid-template-columns: repeat(2, 1fr); }
-  .col2-lg     { grid-template-columns: 1fr; gap: 36px; }
-  .col2-eq     { grid-template-columns: 1fr; gap: 36px; }
-  .col2-dmit   { grid-template-columns: 1fr; gap: 36px; }
-  .method-grid { grid-template-columns: repeat(2, 1fr); }
-  .report-inner-grid { grid-template-columns: 1fr; }
-}
-
 @media (max-width: 768px) {
-  .mvv-grid        { grid-template-columns: 1fr; gap: 14px; }
-  .col2-lg         { grid-template-columns: 1fr; gap: 28px; }
-  .col2-eq         { grid-template-columns: 1fr; gap: 28px; }
-  .col2-dmit       { grid-template-columns: 1fr; gap: 24px; }
-  .method-grid     { grid-template-columns: 1fr; }
-  .check-grid      { grid-template-columns: 1fr; gap: 8px; }
-  .contact-form-box { padding: 22px 16px; border-radius: 16px; }
-  .cities-grid     { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .report-inner-grid { grid-template-columns: 1fr; gap: 12px; }
-  .scan-feature-list { gap: 10px; margin-bottom: 24px; }
-  .scan-feature-item { font-size: .85rem; }
+
+  /* ── Testimonial card — must fit screen width ── */
+  .testimonial-card {
+    min-width: 0 !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ── Booking layout — fixed 380px col breaks mobile ── */
+  .booking-layout {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  .booking-summary { position: static !important; }
+
+  /* ── Hero blobs — hidden overflow via parent, but also limit ── */
+  .hero-blob-1 { width: 300px !important; height: 300px !important; }
+  .hero-blob-2 { width: 250px !important; height: 250px !important; }
+  .hero-blob-3 { width: 200px !important; height: 200px !important; }
+
+  /* ── Footer grid fixed ── */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  /* ── Any stray wide elements ── */
+  .brain-container {
+    width: 280px !important;
+    height: 280px !important;
+  }
+
+  /* ── Report intelligence sub-grid ── */
+  .report-intelligence {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Booking form row (name, phone side-by-side) ── */
+  .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  /* ── Hero stats don't overflow ── */
+  .hero-stats {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 14px 20px !important;
+  }
+  .hero-stat-divider { display: none !important; }
+
+  /* ── CTA actions stack vertically ── */
+  .cta-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .cta-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* ── Hero actions stack ── */
+  .hero-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    max-width: 100% !important;
+  }
+  .hero-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* ── Section header text wraps ── */
+  .section-header h2 { word-break: break-word; }
+
+  /* ── Inline grids with explicit widths ── */
+  [style*="max-width:800px"],
+  [style*="max-width: 800px"],
+  [style*="max-width:820px"],
+  [style*="max-width: 820px"],
+  [style*="max-width:760px"],
+  [style*="max-width: 760px"] {
+    max-width: 100% !important;
+  }
+
+  /* ── Service comparison table ── */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  /* ── Blog featured side panel stacks ── */
+  .blog-featured {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+  .blog-featured-side {
+    gap: 14px !important;
+  }
+
+  /* ── Contact form box ── */
+  .contact-form-box {
+    padding: 20px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  /* ── Scan CTA ── */
+  .scan-cta-inner {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .scan-preview-box {
+    max-width: 100% !important;
+  }
+
+  /* ── All grid containers — nuclear fallback ── */
+  .benefits-grid,
+  .services-grid,
+  .team-grid,
+  .myths-grid,
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mi-grid,
+  .wcu-grid,
+  .counter-grid,
+  .info-cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Page hero text doesn't overflow ── */
+  .page-hero h1,
+  .page-hero p {
+    max-width: 100% !important;
+    word-break: break-word !important;
+  }
+
+  /* ── Card padding consistent ── */
+  .card { padding: 22px 18px; }
+
+  /* ── Navbar container ── */
+  .navbar .container {
+    padding: 0 14px !important;
+  }
+
+  /* ── Mobile menu full width ── */
+  .mobile-menu {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ── Popup box ── */
+  .popup-box {
+    width: calc(100vw - 24px) !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  .popup-overlay {
+    padding: 12px !important;
+  }
 }
 
+/* ─── Tiny phone extra fixes ─── */
 @media (max-width: 480px) {
-  .mvv-grid        { gap: 12px; }
-  .contact-form-box { padding: 18px 12px; border-radius: 14px; }
-  .cities-grid     { grid-template-columns: repeat(2, 1fr); }
-  .check-grid      { grid-template-columns: 1fr; }
+  .mi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .wcu-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .wcu-card p { display: none !important; }
+  .counter-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Time slots 2 col */
+  .time-slots {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  /* Blog featured images smaller */
+  .blog-img { height: 130px !important; }
+
+  /* Newsletter form stack */
+  form[style*="flex"] {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  /* Footer */
+  .footer-bottom {
+    flex-direction: column !important;
+    gap: 10px !important;
+    text-align: center !important;
+  }
+  .footer-certs {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+
+  /* Section badge */
+  .section-badge { font-size: .68rem !important; padding: 4px 10px !important; }
+
+  /* Booking time slot */
+  .time-slot { font-size: .67rem !important; padding: 7px 2px !important; }
+}
+
+@media (max-width: 380px) {
+  /* Single col everything on tiny */
+  .mi-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+  .wcu-grid { grid-template-columns: 1fr !important; }
+  .info-cards { grid-template-columns: 1fr !important; }
+  .hero-badge { font-size: .64rem !important; }
+  .section-badge { font-size: .64rem !important; }
+  .counter-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .logo-text { display: none !important; }
+
+  /* Buttons full width */
+  .btn { width: 100% !important; justify-content: center !important; }
+  /* But not icon-only or social buttons */
+  .social-link.btn,
+  .slider-btn.btn,
+  .blog-search-btn.btn {
+    width: auto !important;
+  }
 }
