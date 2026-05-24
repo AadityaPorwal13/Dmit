@@ -197,21 +197,77 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-head); font-weight: 700; line-height
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-/* Mobile nav */
+/* Mobile nav — premium slide-down drawer */
 .mobile-menu {
-  display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
-  background: white; padding: 24px; z-index: 999;
-  box-shadow: var(--shadow-lg);
-  border-bottom: 1px solid var(--gray-mid);
-  flex-direction: column; gap: 4px;
+  position: fixed;
+  top: var(--nav-h); left: 0; right: 0;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 998;
+  border-bottom: 1px solid rgba(0,94,170,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  padding: 16px 20px 24px;
+  flex-direction: column; gap: 2px;
+  /* animation */
+  max-height: 0;
+  overflow: hidden;
+  display: flex; /* always flex, height animates */
+  transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1),
+              padding 0.38s cubic-bezier(0.4,0,0.2,1),
+              opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
 }
-.mobile-menu.open { display: flex; }
+.mobile-menu.open {
+  max-height: 520px;
+  opacity: 1;
+  pointer-events: all;
+}
 .mobile-menu a {
-  padding: 12px 16px; border-radius: var(--radius-sm);
-  font-weight: 500; color: var(--dark-2); transition: var(--transition);
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: 10px;
+  font-weight: 500; font-size: 0.92rem;
+  color: var(--dark-2); transition: var(--transition);
+  text-decoration: none;
 }
-.mobile-menu a:hover { background: var(--blue-soft); color: var(--blue-deep); }
-.mobile-menu .btn { margin-top: 12px; width: 100%; justify-content: center; }
+.mobile-menu a:hover,
+.mobile-menu a.active {
+  background: var(--blue-soft);
+  color: var(--blue-deep);
+}
+.mobile-menu .mm-icon {
+  color: var(--blue-deep);
+  opacity: 0.7;
+}
+.mobile-menu a.active .mm-icon { opacity: 1; }
+
+/* divider between links and CTA */
+.mobile-menu .mm-divider {
+  height: 1px;
+  background: var(--gray-mid);
+  margin: 10px 0;
+}
+.mobile-menu .mm-book {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: center !important;
+  margin-top: 4px !important;
+  padding: 14px !important;
+  border-radius: 12px !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.01em;
+}
+
+/* Overlay behind menu */
+.mobile-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 997;
+  backdrop-filter: blur(2px);
+}
+.mobile-overlay.open { display: block; }
 
 /* ─── Cards ─────────────────────────────────── */
 .card {
@@ -1239,3 +1295,154 @@ section, .section, .page-hero, .hero, .cta-banner,
 
 /* Inline images and svgs */
 img, svg { max-width: 100%; height: auto; }
+
+/* ═══════════════════════════════════════════
+   FOOTER BOTTOM — DevelopEdge credit
+═══════════════════════════════════════════ */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+}
+.footer-bottom-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.footer-credit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+}
+.devlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--orange-light);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.devlink:hover {
+  color: #FFAD5C;
+  text-decoration: none;
+}
+.dev-icon {
+  width: 13px; height: 13px;
+  stroke-width: 2.5;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ═══════════════════════════════════════════
+   HOW IT WORKS — redesigned mobile cards
+═══════════════════════════════════════════ */
+/* Desktop: horizontal timeline (existing) */
+.hiw-step-card-num {
+  /* number badge used in new card layout on mobile */
+  display: none;
+}
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS — improved track + snap scroll
+═══════════════════════════════════════════ */
+.testimonials-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.testimonial-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.testimonial-card {
+  flex: 0 0 calc(33.333% - 16px);
+  min-width: 0;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  border: 1px solid var(--gray-mid);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+.testimonial-card:hover { box-shadow: var(--shadow-lg); }
+
+/* Quote mark */
+.testimonial-card::before {
+  content: '"';
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--blue-soft);
+  font-family: Georgia, serif;
+  display: block;
+  margin-bottom: -16px;
+  margin-top: -8px;
+}
+
+/* Rating stars */
+.stars {
+  color: #F59E0B;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 2px;
+}
+
+/* Nav dots — larger, more premium */
+.slider-dots { display: flex; gap: 6px; align-items: center; }
+.slider-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gray-mid); cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.slider-dot.active {
+  width: 28px;
+  border-radius: 4px;
+  background: var(--blue-deep);
+}
+
+.slider-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+.slider-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 1.5px solid var(--gray-mid);
+  color: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.slider-btn:hover {
+  background: var(--blue-deep);
+  border-color: var(--blue-deep);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE OVERLAY — behind nav drawer
+═══════════════════════════════════════════ */
+.mobile-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 997;
+  animation: fadeInOverlay 0.2s ease;
+}
+.mobile-overlay.open { display: block; }
+@keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }

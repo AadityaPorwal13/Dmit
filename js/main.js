@@ -54,32 +54,37 @@ function initActiveLink() {
 
 /* ── Mobile hamburger menu ────────────────── */
 function initMobileMenu() {
-  const btn  = document.getElementById('hamburger');
-  const menu = document.getElementById('mobileMenu');
+  const btn     = document.getElementById('hamburger');
+  const menu    = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('mobileOverlay');
   if (!btn || !menu) return;
 
+  function openMenu() {
+    menu.classList.add('open');
+    btn.classList.add('active');
+    overlay?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    btn.classList.remove('active');
+    overlay?.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   btn.addEventListener('click', () => {
-    const open = menu.classList.toggle('open');
-    btn.classList.toggle('active', open);
-    document.body.style.overflow = open ? 'hidden' : '';
+    menu.classList.contains('open') ? closeMenu() : openMenu();
   });
 
   // Close on link click
-  menu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      menu.classList.remove('open');
-      btn.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
-  // Close on outside tap
-  document.addEventListener('click', e => {
-    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
-      menu.classList.remove('open');
-      btn.classList.remove('active');
-      document.body.style.overflow = '';
-    }
+  // Close on overlay tap
+  overlay?.addEventListener('click', closeMenu);
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
   });
 }
 
@@ -105,6 +110,8 @@ function initSlider() {
     });
   }
 
+  function isMobile() { return window.innerWidth <= 768; }
+
   function getCardWidth() {
     if (!cards[0]) return 0;
     const style = window.getComputedStyle(track);
@@ -114,7 +121,14 @@ function initSlider() {
 
   function go(idx) {
     current = Math.max(0, Math.min(idx, cards.length - 1));
-    track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+
+    if (isMobile()) {
+      // Use native scroll on mobile
+      track.scrollTo({ left: current * getCardWidth(), behavior: 'smooth' });
+    } else {
+      track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+    }
+
     document.querySelectorAll('.slider-dot').forEach((d, i) =>
       d.classList.toggle('active', i === current)
     );
@@ -126,19 +140,38 @@ function initSlider() {
   prevBtn?.addEventListener('click', prev);
   nextBtn?.addEventListener('click', next);
 
-  function startAuto() { autoTimer = setInterval(next, 4500); }
-  function stopAuto()  { clearInterval(autoTimer); }
+  function startAuto() {
+    if (isMobile()) return; // no auto on mobile, user scrolls
+    autoTimer = setInterval(next, 4500);
+  }
+  function stopAuto() { clearInterval(autoTimer); }
 
   startAuto();
   track.parentElement?.addEventListener('mouseenter', stopAuto);
   track.parentElement?.addEventListener('mouseleave', startAuto);
 
-  /* Swipe */
+  /* Swipe / touch on desktop (mobile uses native) */
   let startX = 0;
   track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
   track.addEventListener('touchend', e => {
+    if (isMobile()) return; // native scroll handles mobile
     const diff = startX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
+  }, { passive: true });
+
+  /* Sync dots on native scroll (mobile) */
+  track.addEventListener('scroll', () => {
+    if (!isMobile()) return;
+    const cw = getCardWidth();
+    if (cw > 0) {
+      const idx = Math.round(track.scrollLeft / cw);
+      if (idx !== current) {
+        current = idx;
+        document.querySelectorAll('.slider-dot').forEach((d, i) =>
+          d.classList.toggle('active', i === current)
+        );
+      }
+    }
   }, { passive: true });
 
   /* Recalc on resize */

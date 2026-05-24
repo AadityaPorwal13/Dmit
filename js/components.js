@@ -36,10 +36,12 @@ const NAV_HTML = `
   <a href="services.html"><i data-lucide="layout-grid" class="mm-icon"></i>Services</a>
   <a href="blog.html"><i data-lucide="newspaper" class="mm-icon"></i>Blog</a>
   <a href="contact.html"><i data-lucide="phone" class="mm-icon"></i>Contact</a>
+  <div class="mm-divider"></div>
   <a href="booking.html" class="btn btn-primary mm-book">
     <i data-lucide="calendar-check" class="btn-icon"></i>Book Your Test
   </a>
-</div>`;
+</div>
+<div class="mobile-overlay" id="mobileOverlay"></div>`;
 
 const FOOTER_HTML = `
 <footer class="footer">
@@ -102,7 +104,15 @@ const FOOTER_HTML = `
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 MindDecode. All rights reserved. Built for brighter futures.</p>
+      <div class="footer-bottom-left">
+        <p>© 2025 MindDecode. All rights reserved.</p>
+        <p class="footer-credit">
+          Designed &amp; Developed by
+          <a href="#" class="devlink" target="_blank" rel="noopener">
+            <i data-lucide="code-2" class="dev-icon"></i>DevelopEdge
+          </a>
+        </p>
+      </div>
       <div class="footer-certs">
         <span class="cert-badge"><i data-lucide="shield-check" class="cert-icon"></i>ISO Certified</span>
         <span class="cert-badge"><i data-lucide="award" class="cert-icon"></i>DMIT Accredited</span>
